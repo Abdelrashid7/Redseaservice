@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchWellSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_50"
+        android:layout_marginStart="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:layout_marginEnd="@dimen/qb_px_10"
+        android:background="@drawable/btn_round_grey"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/search_btn"
+        app:searchIcon="@drawable/ic_search" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/viewWellRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:paddingBottom="@dimen/qb_px_100"
+        android:fadeScrollbars="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="@dimen/qb_px_3"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="@drawable/btn_round_red"
+        android:scrollbarTrackVertical="@color/white_grey"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchWellSearchView"
+        tools:listitem="@layout/item_view_well" />
+    <ProgressBar
+        android:id="@+id/viewWellProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:progressTint="@color/red"
+        android:visibility="gone"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

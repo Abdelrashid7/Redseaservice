@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow Layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="@color/red"
+                android:endColor="@color/blue"
+                android:angle="90"/> <!-- Shadow color (adjust the alpha) -->
+            <corners android:radius="@dimen/qb_px_10" /> <!-- Radius of your shape -->
+        </shape>
+    </item>
+
+    <!-- Content Layer (Your shape) -->
+    <item android:bottom="@dimen/qb_px_1" android:right="@dimen/qb_px_1" android:left="@dimen/qb_px_1" android:top="@dimen/qb_px_1" android:end="@dimen/qb_px_1"  > <!-- Adjust the top value to control the shadow offset -->
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" /> <!-- Your button background color -->
+            <corners android:radius="@dimen/qb_px_10" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_red_sea_background"
+        android:gravity="fill_horizontal" />
+</layer-list>

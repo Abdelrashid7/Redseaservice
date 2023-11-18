@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/mainCategoriesTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_categories"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/qb_px_22"
+        android:layout_marginTop="@dimen/qb_px_60"
+        android:layout_marginStart="@dimen/qb_px_20"/>
+
+    <ImageButton
+        android:id="@+id/operationsBtn"
+        android:layout_width="@dimen/qb_px_130"
+        android:layout_height="@dimen/qb_px_150"
+        android:src="@mipmap/ic_operations"
+        android:background="@drawable/btn_white"
+        android:backgroundTint="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/mainCategoriesTV"
+        app:layout_constraintStart_toStartOf="@id/mainCategoriesTV"
+        android:layout_marginStart="@dimen/qb_px_20"
+        android:layout_marginTop="@dimen/qb_px_20"
+        />
+
+    <TextView
+        android:id="@+id/operationsTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/operation"
+        app:layout_constraintTop_toBottomOf="@id/operationsBtn"
+        app:layout_constraintStart_toStartOf="@id/operationsBtn"
+        app:layout_constraintEnd_toEndOf="@id/operationsBtn"
+        android:textSize="@dimen/qb_px_16"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:textColor="@color/black"/>
+    <ImageButton
+        android:id="@+id/wellSurveysBtn"
+        android:layout_width="@dimen/qb_px_130"
+        android:layout_height="@dimen/qb_px_150"
+        android:src="@mipmap/ic_surveys"
+        android:background="@drawable/btn_white"
+        android:backgroundTint="@color/dark_red"
+        app:layout_constraintTop_toBottomOf="@id/mainCategoriesTV"
+        app:layout_constraintStart_toEndOf="@id/mainCategoriesTV"
+        android:layout_marginTop="@dimen/qb_px_20"
+        />
+
+    <TextView
+        android:id="@+id/wellSurveysTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/well_surveys"
+        app:layout_constraintTop_toBottomOf="@id/wellSurveysBtn"
+        app:layout_constraintStart_toStartOf="@id/wellSurveysBtn"
+        app:layout_constraintEnd_toEndOf="@id/wellSurveysBtn"
+        android:textSize="@dimen/qb_px_16"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:textColor="@color/black"/>
+
+    <ImageButton
+        android:id="@+id/testBtn"
+        android:layout_width="@dimen/qb_px_130"
+        android:layout_height="@dimen/qb_px_150"
+        android:src="@mipmap/ic_test"
+        android:background="@drawable/btn_white"
+        android:backgroundTint="@color/darker_red"
+        app:layout_constraintTop_toBottomOf="@id/operationsBtn"
+        app:layout_constraintStart_toStartOf="@id/operationsBtn"
+        android:layout_marginTop="@dimen/qb_px_60"
+        />
+
+    <TextView
+        android:id="@+id/testTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/test_str"
+        app:layout_constraintTop_toBottomOf="@id/testBtn"
+        app:layout_constraintStart_toStartOf="@id/testBtn"
+        app:layout_constraintEnd_toEndOf="@id/testBtn"
+        android:textSize="@dimen/qb_px_16"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:textColor="@color/black"/>
+
+    <ImageButton
+        android:id="@+id/troubleShootingBtn"
+        android:layout_width="@dimen/qb_px_130"
+        android:layout_height="@dimen/qb_px_150"
+        android:src="@mipmap/ic_trouble_shooting"
+        android:background="@drawable/btn_white"
+        android:backgroundTint="@color/black_red"
+        app:layout_constraintTop_toBottomOf="@id/wellSurveysBtn"
+        app:layout_constraintStart_toStartOf="@id/wellSurveysBtn"
+        android:layout_marginTop="@dimen/qb_px_60"
+        />
+
+    <TextView
+        android:id="@+id/troubleShootingTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trouble_shooting"
+        app:layout_constraintTop_toBottomOf="@id/troubleShootingBtn"
+        app:layout_constraintStart_toStartOf="@id/troubleShootingBtn"
+        app:layout_constraintEnd_toEndOf="@id/troubleShootingBtn"
+        android:textSize="@dimen/qb_px_16"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:textColor="@color/black"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

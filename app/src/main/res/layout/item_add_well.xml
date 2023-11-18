@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_white"
+    android:backgroundTint="@android:color/transparent"
+    android:outlineAmbientShadowColor="@android:color/transparent"
+    android:outlineSpotShadowColor="@android:color/transparent"
+    android:padding="@dimen/qb_px_10"
+    app:cardElevation="@dimen/qb_px_0"
+    app:contentPadding="@dimen/qb_px_5"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addWellConstraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_white"
+        android:backgroundTint="@color/recycler_color">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutAddWellBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_white"
+            android:backgroundTint="@color/recycler_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/addWellNumTV"
+                android:layout_width="@dimen/qb_px_300"
+                android:layout_height="@dimen/qb_px_60"
+                android:background="@color/recycler_color"
+                android:elevation="@dimen/qb_px_2"
+                android:gravity="center"
+                android:padding="@dimen/qb_px_10"
+                android:text="Number 1"
+                android:textAllCaps="true"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/qb_px_18"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/structureNameTV"
+            android:layout_width="@dimen/qb_px_300"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="Hello"
+            android:textColor="@color/black"
+            android:textSize="@dimen/qb_px_20"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@id/constraintLayoutAddWellBtn"
+            app:layout_constraintStart_toStartOf="@id/constraintLayoutAddWellBtn"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayoutAddWellBtn" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/childRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/qb_px_8"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/qb_px_6"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/structureNameTV"
+            tools:listitem="@layout/item_add_well" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nextStructureBtn"
+            android:layout_width="@dimen/qb_px_80"
+            android:layout_height="@dimen/qb_px_40"
+            android:layout_marginEnd="@dimen/qb_px_10"
+            android:background="@drawable/btn_round_red"
+            android:text="@string/next_btn"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="@dimen/qb_px_18"
+            android:layout_marginBottom="@dimen/qb_px_5"
+            app:layout_constraintTop_toBottomOf="@id/childRecyclerView"
+            app:layout_constraintBottom_toBottomOf="@id/addWellConstraintLayout"
+            app:layout_constraintEnd_toEndOf="@id/childRecyclerView"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/backStructureBtn"
+            android:layout_width="@dimen/qb_px_80"
+            android:layout_height="@dimen/qb_px_40"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:background="@drawable/btn_white"
+            android:text="@string/back_btn"
+            android:textColor="@color/grey"
+            android:textAllCaps="false"
+            android:textSize="@dimen/qb_px_18"
+            android:layout_marginBottom="@dimen/qb_px_5"
+            app:layout_constraintTop_toBottomOf="@id/childRecyclerView"
+            app:layout_constraintBottom_toBottomOf="@id/addWellConstraintLayout"
+            app:layout_constraintStart_toStartOf="@id/childRecyclerView" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

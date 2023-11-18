@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Shadow shape -->
+    <item>
+        <shape>
+            <solid android:color="@color/grey" /> <!-- Shadow color with transparency -->
+            <corners android:radius="@dimen/qb_px_10" />
+        </shape>
+    </item>
+
+    <!-- Main shape (white) -->
+    <item   android:bottom="@dimen/qb_px_1" android:right="@dimen/qb_px_1">
+        <shape>
+            <solid android:color="@color/white" />
+            <corners android:radius="@dimen/qb_px_10" />
+        </shape>
+    </item>
+
+</layer-list>

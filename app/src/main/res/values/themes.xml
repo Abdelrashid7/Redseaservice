@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.RedSea" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/red</item>
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="Theme.RedSea" parent="Base.Theme.RedSea">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="color">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

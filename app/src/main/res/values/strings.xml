@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Red Sea Oil Services</string>
+
+
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="signIn">Sign in to</string>
+    <string name="login">Login</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_credentials">Wrong Username or Password!</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="remember_me">"Remember me"</string>
+    <string name="forgot_password">"Forgot Password?"</string>
+
+
+    <string name="search_well">Search Well Name</string>
+    <string name="add_well">Add</string>
+    <string name="view_well">View</string>
+    <string name="open_request_well">Open Request</string>
+    <string name="saved_drafts_well">Saved Drafts</string>
+    <string name="request_reason">Request Reason</string>
+    <string name="helper_text">Helper Text</string>
+    <string name="submit">Submit</string>
+    <string name="print">Print</string>
+    <string name="edit_request">Edit Request</string>
+
+
+    <string name="search_btn">Search</string>
+    <string name="back_btn">Back</string>
+    <string name="next_btn">Next</string>
+    <string name="upload_photos_btn">Upload Photos</string>
+
+
+    <string name="from_time">From</string>
+    <string name="To_time">To</string>
+    <string name="option_number_1">Number 1</string>
+    <string name="option_number_2">Number 2</string>
+    <string name="option_number_3">Number 3</string>
+    <string name="photo_option">Photos</string>
+    <string name="save_draft_option">Save Draft</string>
+    <string name="publish_option">Publish</string>
+
+
+    <string name="main_categories">Main Categories</string>
+    <string name="operation">Operation</string>
+    <string name="well_surveys">Well Surveys</string>
+    <string name="test_str">Test</string>
+    <string name="trouble_shooting">Trouble Shooting</string>
+
+
+    <string name="home_toolbar">Home</string>
+    <string name="operations_toolbar">OPS</string>
+    <string name="search_toolbar">Search</string>
+    <string name="profile_toolbar">Profile</string>
+    <string name="view_toolbar">View</string>
+    <string name="red_sea_toolbar">RedSea\nOil\nServices</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

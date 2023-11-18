@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <TextView
+        android:id="@+id/draftNameTV"
+        android:layout_width="@dimen/qb_px_60"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="NAME"
+        android:textSize="@dimen/qb_px_15"
+        android:layout_marginStart="@dimen/qb_px_10"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/fromDraftTV"
+        android:layout_width="@dimen/qb_px_90"
+        android:layout_height="wrap_content"
+        android:text="From"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/toDraftTV"
+        android:textSize="@dimen/qb_px_15"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginEnd="@dimen/qb_px_10"/>
+    <TextView
+        android:id="@+id/toDraftTV"
+        android:layout_width="@dimen/qb_px_90"
+        android:layout_height="wrap_content"
+        android:text="To"
+        app:layout_constraintEnd_toStartOf="@id/draftIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/qb_px_15"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginEnd="@dimen/qb_px_10"/>
+
+    <ImageView
+        android:id="@+id/draftIcon"
+        android:layout_width="19dp"
+        android:layout_height="17dp"
+        android:layout_marginEnd="@dimen/qb_px_10"
+        android:background="@drawable/ic_draft"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        app:layout_constraintTop_toBottomOf="@id/fromDraftTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:background="@color/grey"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:backgroundTint="@android:color/transparent"
+    android:backgroundTintMode="multiply"
+    android:padding="@dimen/qb_px_10"
+    app:cardElevation="@dimen/qb_px_0"
+    app:contentPadding="@dimen/qb_px_5"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutChildAddWellMultiText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/childMultiTextTV"
+            android:layout_width="@dimen/qb_px_300"
+            android:layout_height="@dimen/qb_px_40"
+            android:gravity="center"
+            android:text="Gauge"
+            android:textColor="@color/black"
+            android:textSize="@dimen/qb_px_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/childMultiTextTV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/piMultiTextInput"
+                    android:layout_width="@dimen/qb_px_70"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:background="@drawable/btn_white"
+                    android:gravity="center"
+                    android:hint="PI"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/qb_px_14"
+                    android:layout_marginRight="16dp" />
+
+                <EditText
+                    android:id="@+id/pdMultiTextInput"
+                    android:layout_width="@dimen/qb_px_70"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:background="@drawable/btn_white"
+                    android:gravity="center"
+                    android:hint="PD"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/qb_px_14"
+                    android:layout_marginRight="16dp" />
+
+                <EditText
+                    android:id="@+id/tiMultiTextInput"
+                    android:layout_width="@dimen/qb_px_70"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:background="@drawable/btn_white"
+                    android:gravity="center"
+                    android:hint="TI"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/qb_px_14"
+                    android:layout_marginRight="16dp" />
+
+                <EditText
+                    android:id="@+id/tmMultiTextInput"
+                    android:layout_width="@dimen/qb_px_70"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:background="@drawable/btn_white"
+                    android:gravity="center"
+                    android:hint="TM"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/qb_px_14"
+                    android:layout_marginRight="16dp" />
+
+                <EditText
+                    android:id="@+id/ctMultiTextInput"
+                    android:layout_width="@dimen/qb_px_70"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:background="@drawable/btn_white"
+                    android:gravity="center"
+                    android:hint="CT"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/qb_px_14" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

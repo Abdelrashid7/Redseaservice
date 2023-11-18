@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <!-- Your gradient -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/blue"
+                android:endColor="@color/blue"
+                android:centerColor="#6189C7"
+                android:type="linear"
+                android:angle="90" />
+            <corners android:radius="@dimen/qb_px_6" />
+        </shape>
+    </item>
+
+    <!-- Your vector drawable -->
+    <item
+        android:id="@+id/vector_item"
+        android:drawable="@drawable/ic_open_request_background"
+        android:gravity="end" />
+
+</layer-list>
