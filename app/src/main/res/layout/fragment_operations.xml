@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/searchBtn"
+        android:layout_width="@dimen/qb_px_300"
+        android:layout_height="@dimen/qb_px_60"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:background="@drawable/btn_round_black"
+        android:drawableStart="@drawable/ic_search"
+        android:hint="@string/search_well"
+        android:paddingHorizontal="@dimen/qb_px_25"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addWellBtn"
+        android:layout_width="@dimen/qb_px_130"
+        android:layout_height="@dimen/qb_px_60"
+        android:background="@drawable/btn_red_blue"
+        android:text="@string/add_well"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        android:textSize="@dimen/qb_px_13"
+        android:paddingEnd="@dimen/qb_px_30"
+        android:drawableStart="@drawable/ic_add"
+        android:paddingStart="@dimen/qb_px_30"
+        android:drawablePadding="@dimen/qb_px_1"
+        app:layout_constraintTop_toBottomOf="@id/searchBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/viewWellBtn"
+        android:layout_marginTop="@dimen/qb_px_30"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/viewWellBtn"
+        android:layout_width="@dimen/qb_px_130"
+        android:layout_height="@dimen/qb_px_60"
+        android:background="@drawable/btn_round_red"
+        android:text="@string/view_well"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="@dimen/qb_px_13"
+        android:paddingEnd="@dimen/qb_px_30"
+        android:drawableStart="@drawable/ic_view"
+        android:paddingStart="@dimen/qb_px_30"
+        app:layout_constraintTop_toBottomOf="@id/searchBtn"
+        app:layout_constraintStart_toEndOf="@id/addWellBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/qb_px_30"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/openRequestBtn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/qb_px_60"
+        android:background="@drawable/btn_gradient_blue"
+        android:text="@string/open_request_well"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="@dimen/qb_px_13"
+        android:paddingEnd="@dimen/qb_px_80"
+        android:drawableStart="@drawable/ic_open_request"
+        android:paddingStart="@dimen/qb_px_50"
+        app:layout_constraintTop_toBottomOf="@id/addWellBtn"
+        app:layout_constraintStart_toStartOf="@id/addWellBtn"
+        app:layout_constraintEnd_toEndOf="@id/viewWellBtn"
+        android:layout_marginTop="@dimen/qb_px_30"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/draftConstraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/openRequestBtn"
+        app:layout_constraintEnd_toEndOf="@id/openRequestBtn"
+        app:layout_constraintTop_toBottomOf="@id/openRequestBtn"
+        android:layout_marginTop="@dimen/qb_px_20"
+        tools:showPaths="true"
+        android:background="@drawable/btn_round_black">
+
+        <Toolbar
+            android:id="@+id/draftToolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/qb_px_60"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/draft_toolbar"
+            android:layout_marginStart="@dimen/qb_px_1"
+            android:layout_marginEnd="@dimen/qb_px_1"
+            android:layout_marginTop="@dimen/qb_px_1"
+            app:layout_constraintCircleRadius="@dimen/qb_px_1"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/draftToolbar"
+            app:layout_constraintTop_toTopOf="@id/draftToolbar"
+            android:text="DRAFTS"
+            app:layout_constraintBottom_toBottomOf="@id/draftToolbar"
+            android:layout_marginStart="@dimen/qb_px_30"
+            android:textSize="@dimen/qb_px_20"
+            android:textColor="@color/white"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/draftsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/qb_px_72"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/draftToolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_drafts"
+            />
+        <ProgressBar
+            android:id="@+id/draftProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:progressTint="@color/red"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/qb_px_100"
+    android:background="@color/white"
+    android:layout_marginBottom="@dimen/qb_px_5"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/constraintLayoutAddWell"
+        android:background="@drawable/btn_round"
+        android:elevation="@dimen/qb_px_3"
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/qb_px_15"
+        android:layout_marginStart="@dimen/qb_px_10"
+        android:layout_marginEnd="@dimen/qb_px_10"
+        android:layout_marginVertical="@dimen/qb_px_10"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/wellNameInputText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_20"
+            android:background="@android:color/transparent"
+            android:hint="Enter Well Name"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:maxLines="1"
+            />
+
+        <ImageView
+            android:id="@+id/fromDateImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/qb_px_30"
+            android:layout_marginTop="@dimen/qb_px_40"
+            android:src="@drawable/ic_from_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wellNameInputText" />
+
+        <ImageView
+            android:id="@+id/toDateImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/qb_px_30"
+            android:layout_marginTop="@dimen/qb_px_30"
+            android:src="@drawable/ic_to_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fromDateImageView" />
+
+        <TextView
+            android:id="@+id/fromTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:text="@string/from_time"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/qb_px_16"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/fromDateImageView"
+            app:layout_constraintStart_toEndOf="@id/fromDateImageView"
+            app:layout_constraintTop_toTopOf="@id/fromDateImageView" />
+
+
+        <Spinner
+            android:id="@+id/fromDaySpinner"
+            android:layout_width="@dimen/qb_px_60"
+            android:layout_height="@dimen/qb_px_40"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:background="@drawable/spinner_drop_down"
+            android:elevation="@dimen/qb_px_3"
+            app:layout_constraintBottom_toBottomOf="@id/fromTV"
+            app:layout_constraintStart_toEndOf="@id/fromTV"
+            app:layout_constraintTop_toTopOf="@id/fromTV" />
+
+        <Spinner
+            android:id="@+id/fromMonthSpinner"
+            android:layout_width="@dimen/qb_px_70"
+            android:layout_height="@dimen/qb_px_40"
+            android:elevation="@dimen/qb_px_3"
+            android:background="@drawable/spinner_drop_down"
+            android:layout_marginStart="@dimen/qb_px_2"
+            app:layout_constraintBottom_toBottomOf="@id/fromDaySpinner"
+            app:layout_constraintStart_toEndOf="@id/fromDaySpinner"
+            app:layout_constraintTop_toTopOf="@id/fromDaySpinner" />
+
+        <Spinner
+            android:id="@+id/fromYearSpinner"
+            android:layout_width="@dimen/qb_px_80"
+            android:layout_height="@dimen/qb_px_40"
+            android:background="@drawable/spinner_drop_down"
+            android:elevation="@dimen/qb_px_30"
+            app:layout_constraintBottom_toBottomOf="@id/fromMonthSpinner"
+            android:layout_marginStart="@dimen/qb_px_2"
+            app:layout_constraintStart_toEndOf="@id/fromMonthSpinner"
+            app:layout_constraintTop_toTopOf="@id/fromMonthSpinner" />
+
+        <Spinner
+            android:id="@+id/toDaySpinner"
+            android:layout_width="@dimen/qb_px_60"
+            android:layout_height="@dimen/qb_px_40"
+            android:background="@drawable/spinner_drop_down"
+            android:elevation="@dimen/qb_px_3"
+            app:layout_constraintBottom_toBottomOf="@id/toTV"
+            app:layout_constraintStart_toStartOf="@id/fromDaySpinner"
+            app:layout_constraintTop_toTopOf="@id/toTV" />
+
+        <Spinner
+            android:id="@+id/toMonthSpinner"
+            android:layout_width="@dimen/qb_px_70"
+            android:layout_height="@dimen/qb_px_40"
+            android:background="@drawable/spinner_drop_down"
+            android:elevation="@dimen/qb_px_3"
+            android:layout_marginStart="@dimen/qb_px_2"
+            app:layout_constraintBottom_toBottomOf="@id/toDaySpinner"
+            app:layout_constraintStart_toEndOf="@id/toDaySpinner"
+            app:layout_constraintTop_toTopOf="@id/toDaySpinner" />
+
+        <Spinner
+            android:id="@+id/toYearSpinner"
+            android:layout_width="@dimen/qb_px_80"
+            android:layout_height="@dimen/qb_px_40"
+            android:background="@drawable/spinner_drop_down"
+            android:elevation="@dimen/qb_px_3"
+            android:layout_marginStart="@dimen/qb_px_2"
+            app:layout_constraintBottom_toBottomOf="@id/toMonthSpinner"
+            app:layout_constraintStart_toEndOf="@id/toMonthSpinner"
+            app:layout_constraintTop_toTopOf="@id/toMonthSpinner" />
+
+
+        <TextView
+            android:id="@+id/toTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:text="@string/To_time"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/qb_px_16"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/toDateImageView"
+            app:layout_constraintStart_toEndOf="@id/toDateImageView"
+            app:layout_constraintTop_toTopOf="@id/toDateImageView" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_30"
+            android:layout_marginBottom="@dimen/qb_px_10"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@id/toDateImageView"
+            app:layout_constraintEnd_toEndOf="@id/toYearSpinner"
+            app:layout_constraintTop_toBottomOf="@id/toYearSpinner"
+            android:clipToOutline="false"
+            android:layout_marginEnd="@dimen/qb_px_16"
+            android:layout_marginStart="@dimen/qb_px_16"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:outlineSpotShadowColor="@color/grey"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:cardElevation="@dimen/qb_px_8">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewAddItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:orientation="vertical"
+                />
+            <ProgressBar
+                android:id="@+id/addWellProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progressTint="@color/red"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/toDateImageView"
+            app:layout_constraintTop_toBottomOf="@id/cardView"
+            android:background="@drawable/btn_white"
+            android:backgroundTint="@android:color/transparent"
+            android:clipToOutline="false"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:cardElevation="@dimen/qb_px_8"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/saveDraftBtn"
+                android:layout_width="@dimen/qb_px_130"
+                android:layout_height="@dimen/qb_px_80"
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:background="@drawable/btn_white"
+                android:drawableTop="@drawable/ic_save_draft"
+                android:padding="@dimen/qb_px_10"
+                android:text="@string/save_draft_option"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/toDateImageView"
+                app:layout_constraintTop_toBottomOf="@id/cardView"
+                android:layout_marginBottom="3dp"
+                />
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/toYearSpinner"
+            app:layout_constraintTop_toBottomOf="@id/cardView"
+            android:background="@drawable/btn_white"
+            android:backgroundTint="@android:color/transparent"
+            android:clipToOutline="false"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:cardElevation="@dimen/qb_px_8"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/publishWellBtn"
+                android:layout_width="@dimen/qb_px_130"
+                android:layout_height="@dimen/qb_px_80"
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:background="@drawable/btn_white"
+                android:drawableTop="@drawable/ic_publish"
+                android:padding="@dimen/qb_px_10"
+                android:shadowRadius="@integer/material_motion_duration_long_1"
+                android:text="@string/publish_option"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/toYearSpinner"
+                app:layout_constraintTop_toBottomOf="@id/cardView"
+                android:layout_marginBottom="3dp"
+                />
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

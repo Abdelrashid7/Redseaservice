@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.activity.MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_80"
+        android:background="@color/red"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    <TextView
+        android:id="@+id/redSeaOilToolBarTV"
+        android:layout_width="@dimen/qb_px_70"
+        android:layout_height="wrap_content"
+        android:text="@string/red_sea_toolbar"
+        android:textSize="@dimen/qb_px_16"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:lineHeight="@dimen/qb_px_20"
+        android:fontFamily="@font/poppins"
+        android:maxLines="3"
+        android:textFontWeight="700"
+        android:textColor="@color/white"
+        />
+        <TextView
+            android:id="@+id/pageTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/home_toolbar"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins"
+            android:textStyle="bold"
+            android:textSize="@dimen/qb_px_25"
+            android:textColor="@color/white"
+            android:textFontWeight="700"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"/>
+
+
+    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:mbn_backgroundBottomColor="@color/red"
+        app:mbn_circleColor="@android:color/transparent"
+        app:mbn_countBackgroundColor="@color/red"
+        app:mbn_shadowColor="@android:color/transparent"
+        app:mbn_defaultIconColor="@color/grey"
+        app:mbn_rippleColor="@color/red"
+        android:visibility="visible"
+        app:mbn_selectedIconColor="@color/red" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

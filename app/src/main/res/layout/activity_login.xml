@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.LoginActivity">
+
+    <TextView
+        android:id="@+id/welcomeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_100"
+        android:fontFamily="@font/poppins"
+        android:text="@string/welcome"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/qb_px_19"
+        app:layout_constraintStart_toStartOf="@id/signInTv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/signInTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:fontFamily="@font/poppins"
+        android:text="@string/signIn"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/qb_px_25"
+        app:layout_constraintStart_toStartOf="@id/appNameTv"
+        app:layout_constraintTop_toBottomOf="@id/welcomeTV" />
+
+    <TextView
+        android:id="@+id/appNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:fontFamily="@font/poppins"
+        android:text="@string/app_name"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/qb_px_16"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/usernameTV"
+        app:layout_constraintTop_toBottomOf="@+id/signInTv" />
+
+    <TextView
+        android:id="@+id/usernameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_30"
+        android:fontFamily="@font/poppins"
+        android:text="Email"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/usernameInput"
+        app:layout_constraintTop_toBottomOf="@id/appNameTv" />
+
+
+    <EditText
+        android:id="@+id/usernameInput"
+        android:layout_width="@dimen/qb_px_278"
+        android:layout_height="@dimen/qb_px_59"
+        android:layout_marginTop="@dimen/qb_px_2"
+        android:background="@drawable/btn_login_credentials"
+        android:fontFamily="@font/poppins"
+        android:hint="Enter your Email"
+        android:inputType="textEmailAddress"
+        android:padding="@dimen/qb_px_16"
+        android:textColorHint="@color/pale_grey"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/usernameTV" />
+
+    <TextView
+        android:id="@+id/passwordTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_30"
+        android:text="@string/prompt_password"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/usernameInput"
+        app:layout_constraintTop_toBottomOf="@id/usernameInput" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/passwordInput"
+        android:layout_width="@dimen/qb_px_278"
+        android:layout_height="@dimen/qb_px_59"
+        android:layout_marginTop="@dimen/qb_px_2"
+        app:layout_constraintWidth_default="percent"
+        android:background="@drawable/btn_login_credentials"
+        android:fontFamily="@font/poppins"
+        android:hint="Enter your password"
+        android:inputType="textPassword"
+        android:padding="@dimen/qb_px_16"
+        android:paddingEnd="@dimen/qb_px_50"
+        android:textColorHint="@color/pale_grey"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintEnd_toEndOf="@id/usernameInput"
+        app:layout_constraintStart_toStartOf="@id/usernameInput"
+        app:layout_constraintTop_toBottomOf="@id/passwordTV" />
+
+    <ImageView
+        android:id="@+id/hidePwIcon"
+        android:layout_width="@dimen/qb_px_25"
+        android:layout_height="@dimen/qb_px_25"
+        android:layout_marginEnd="@dimen/qb_px_19"
+        android:background="@mipmap/ic_hide_pw"
+        android:scaleType="fitXY"
+        android:clickable="true"
+        android:backgroundTint="@color/blue"
+        android:focusableInTouchMode="false"
+        app:layout_constraintBottom_toBottomOf="@id/passwordInput"
+        app:layout_constraintEnd_toEndOf="@id/passwordInput"
+        app:layout_constraintTop_toTopOf="@id/passwordInput" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/remembermeCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_2"
+        android:fontFamily="@font/poppins"
+        android:text="@string/remember_me"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/qb_px_12"
+        app:buttonTint="@color/blue"
+        app:layout_constraintStart_toStartOf="@id/passwordInput"
+        app:layout_constraintTop_toBottomOf="@id/passwordInput" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logInBtn"
+        android:layout_width="@dimen/qb_px_278"
+        android:layout_height="@dimen/qb_px_59"
+        android:layout_marginTop="@dimen/qb_px_30"
+        android:background="@drawable/btn_round_red"
+        android:fontFamily="@font/poppins"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/qb_px_16"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/remembermeCheckBox" />
+    <ProgressBar
+        android:id="@+id/logInProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:progressTint="@color/red"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

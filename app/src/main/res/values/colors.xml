@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#1A4F8F</color>
+    <color name="blue_view">#006CB0</color>
+    <color name="pale_blue">#6189C7</color>
+    <color name="very_pale_blue">#A7C2FF</color>
+    <color name="recycler_color">#F0F4FA</color>
+    <color name="blue_add">#538FD8</color>
+    <color name="red">#AE0001</color>
+    <color name="red_pale">#ff9797</color>
+    <color name="dark_red">#860004</color>
+    <color name="darker_red">#5F0006</color>
+    <color name="black_red">#370009</color>
+    <color name="green">#2EAD23</color>
+    <color name="yellow">#D9B227</color>
+    <color name="grey">#4D4D4D</color>
+    <color name="pale_grey">#ABABAB</color>
+    <color name="white_grey">#F2F2F2</color>
+
+
+</resources>
