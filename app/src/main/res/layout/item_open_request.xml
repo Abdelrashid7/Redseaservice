@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/requestWellItem"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/viewWellImageView"
+        android:layout_width="@dimen/qb_px_90"
+        android:layout_height="@dimen/qb_px_90"
+        android:src="@drawable/ic_view_well"
+        android:layout_marginStart="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/wellNameViewWellTV"
+        android:layout_width="@dimen/qb_px_250"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:text="Petrobel bolayim"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_25"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/viewWellImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bls22TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:text="BLS-22"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/wellNameViewWellTV"
+        app:layout_constraintTop_toBottomOf="@id/wellNameViewWellTV" />
+
+    <TextView
+        android:id="@+id/edc55TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/qb_px_40"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:text="EDC-55"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toEndOf="@id/bls22TV"
+        app:layout_constraintTop_toBottomOf="@id/wellNameViewWellTV" />
+
+    <TextView
+        android:id="@+id/dateInTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:layout_marginEnd="@dimen/qb_px_20"
+        android:text="DATE IN"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wellNameViewWellTV" />
+
+    <TextView
+        android:id="@+id/opTypeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:text="OP-TYPE"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/bls22TV"
+        app:layout_constraintTop_toBottomOf="@id/bls22TV" />
+
+    <TextView
+        android:id="@+id/dateOutTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:layout_marginEnd="@dimen/qb_px_20"
+        android:text="DATE OUT"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateInTV" />
+
+    <TextView
+        android:id="@+id/lastPallReasonTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:text="LAST PALL REASON"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/bls22TV"
+        app:layout_constraintTop_toBottomOf="@id/opTypeTV" />
+
+    <TextView
+        android:id="@+id/motorTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:layout_marginEnd="@dimen/qb_px_10"
+        android:text="MOTOR:LOREM EPSUM"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/bls22TV"
+        app:layout_constraintTop_toBottomOf="@id/lastPallReasonTV" />
+
+    <TextView
+        android:id="@+id/startDayTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:text="START DAY"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/bls22TV"
+        app:layout_constraintTop_toBottomOf="@id/motorTV" />
+
+    <TextView
+        android:id="@+id/lorem1TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:text="LOREM"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toStartOf="@id/bls22TV"
+        app:layout_constraintTop_toBottomOf="@id/startDayTV" />
+
+    <TextView
+        android:id="@+id/lorem2TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/qb_px_30"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:text="LOREM"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toEndOf="@id/lorem1TV"
+        app:layout_constraintTop_toBottomOf="@id/startDayTV" />
+
+    <TextView
+        android:id="@+id/lorem3TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/qb_px_30"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:text="LOREM"
+        android:textColor="@color/black"
+        android:textSize="@dimen/qb_px_16"
+        app:layout_constraintStart_toEndOf="@id/lorem2TV"
+        app:layout_constraintTop_toBottomOf="@id/startDayTV" />
+
+    <View
+        android:id="@+id/dividerLineView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_2"
+        android:layout_marginTop="@dimen/qb_px_20"
+        android:background="@color/pale_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lorem1TV" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
