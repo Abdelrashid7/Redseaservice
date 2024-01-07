@@ -104,6 +104,7 @@ class OperationsFragment : Fragment() {
 
 
     private fun userWellsoperations() {
+        val transiaction:FragmentTransaction?=fragmentManager?.beginTransaction()
         binding.draftProgress.visibility = View.VISIBLE
         RetrofitClient.instance.userWells("Bearer ${UserID.userAccessToken}")
             .enqueue(object : Callback<UserWells> {
@@ -116,11 +117,7 @@ class OperationsFragment : Fragment() {
                         val userWellsResponse = response.body()
                         Log.d("SAVEDDRAFT", userWellsResponse.toString())
                         if (userWellsResponse != null) {
-                            val latestTwoResponses = userWellsResponse.subList(
-                                userWellsResponse.size - 2,
-                                userWellsResponse.size
-                            )
-                            draftsAdapter = DraftsAdapter(latestTwoResponses)
+                            draftsAdapter = DraftsAdapter(transiaction,userWellsResponse)
                             binding.draftsRecyclerView.adapter = draftsAdapter
                         }
                     }
@@ -143,13 +140,110 @@ class OperationsFragment : Fragment() {
 
     }
     private fun userWellssurvey(){
-        Toast.makeText(context, "well survey data", Toast.LENGTH_SHORT).show()
+        val transiaction:FragmentTransaction?=fragmentManager?.beginTransaction()
+        binding.draftProgress.visibility = View.VISIBLE
+        RetrofitClient.instance.userWellssurvey("Bearer ${UserID.userAccessToken}")
+            .enqueue(object : Callback<UserWells> {
+                override fun onResponse(
+                    call: Call<UserWells>,
+                    response: Response<UserWells>
+                ) {
+                    if (response.isSuccessful) {
+
+                        val userWellsResponse = response.body()
+                        Log.d("SAVEDDRAFT", userWellsResponse.toString())
+                        if (userWellsResponse != null) {
+                            draftsAdapter = DraftsAdapter(transiaction,userWellsResponse)
+                            binding.draftsRecyclerView.adapter = draftsAdapter
+                        }
+                    }
+                    binding.draftProgress.visibility = View.GONE
+                }
+
+
+                override fun onFailure(call: Call<UserWells>, t: Throwable) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("SAVED DRAFTS FAILED DATA", t.message.toString())
+                    binding.draftProgress.visibility = View.GONE
+                }
+
+            })
+
     }
     private fun userWellstest(){
-        Toast.makeText(context, "test data", Toast.LENGTH_SHORT).show()
+        val transiaction:FragmentTransaction?=fragmentManager?.beginTransaction()
+        binding.draftProgress.visibility = View.VISIBLE
+        RetrofitClient.instance.userWellstest("Bearer ${UserID.userAccessToken}")
+            .enqueue(object : Callback<UserWells> {
+                override fun onResponse(
+                    call: Call<UserWells>,
+                    response: Response<UserWells>
+                ) {
+                    if (response.isSuccessful) {
+
+                        val userWellsResponse = response.body()
+                        Log.d("SAVEDDRAFT", userWellsResponse.toString())
+                        if (userWellsResponse != null) {
+                            draftsAdapter = DraftsAdapter(transiaction,userWellsResponse)
+                            binding.draftsRecyclerView.adapter = draftsAdapter
+                        }
+                    }
+                    binding.draftProgress.visibility = View.GONE
+                }
+
+
+                override fun onFailure(call: Call<UserWells>, t: Throwable) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("SAVED DRAFTS FAILED DATA", t.message.toString())
+                    binding.draftProgress.visibility = View.GONE
+                }
+
+            })
     }
     private fun userWelltrouble(){
-        Toast.makeText(context, "trouble data", Toast.LENGTH_SHORT).show()
+        val transiaction:FragmentTransaction?=fragmentManager?.beginTransaction()
+        binding.draftProgress.visibility = View.VISIBLE
+        RetrofitClient.instance.userWellstrouble("Bearer ${UserID.userAccessToken}")
+            .enqueue(object : Callback<UserWells> {
+                override fun onResponse(
+                    call: Call<UserWells>,
+                    response: Response<UserWells>
+                ) {
+                    if (response.isSuccessful) {
+
+                        val userWellsResponse = response.body()
+                        Log.d("SAVEDDRAFT", userWellsResponse.toString())
+                        if (userWellsResponse != null) {
+                            draftsAdapter = DraftsAdapter(transiaction,userWellsResponse)
+                            binding.draftsRecyclerView.adapter = draftsAdapter
+                        }
+                    }
+                    binding.draftProgress.visibility = View.GONE
+                }
+
+
+                override fun onFailure(call: Call<UserWells>, t: Throwable) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("SAVED DRAFTS FAILED DATA", t.message.toString())
+                    binding.draftProgress.visibility = View.GONE
+                }
+
+            })
     }
 
 

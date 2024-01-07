@@ -20,7 +20,6 @@ import com.example.redsea.service.ui.TitleInterface
 import com.example.redsea.service.ui.UserID
 import com.example.redsea.service.ui.activity.mysharedpref
 import com.example.redsea.service.ui.adapters.adapters.ViewWellAdapter
-import okhttp3.internal.notifyAll
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,8 +45,6 @@ class ViewWellFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         (activity as? TitleInterface)?.onTextChange("View", getString(R.string.view_toolbar))
         val dattype= mysharedpref(requireContext()).getDataType()
-
-
         when (dattype) {
             "operations" -> getWellsoperations()
             "wellSurveys" -> getWellssurvey()
@@ -151,6 +148,7 @@ class ViewWellFragment : Fragment(){
 
 
     private fun getWellsoperations() {
+        Toast.makeText(context, "Operation Data", Toast.LENGTH_SHORT).show()
         val fragmentTransaction = fragmentManager?.beginTransaction()
         binding.viewWellProgress.visibility = View.VISIBLE
         RetrofitClient.instance.getViewWells("Bearer ${UserID.userAccessToken}")
@@ -187,13 +185,108 @@ class ViewWellFragment : Fragment(){
             })
     }
     private fun getWellssurvey(){
-        Toast.makeText(context, "waiting for wellsurvey data", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Survey Data", Toast.LENGTH_SHORT).show()
+        binding.viewWellProgress.visibility = View.VISIBLE
+        val fragmentTransaction = fragmentManager?.beginTransaction()
+        RetrofitClient.instance.getsurveyWells("Bearer ${UserID.userAccessToken}")
+            .enqueue(object : Callback<ViewWells> {
+                override fun onResponse(call: Call<ViewWells>, response: Response<ViewWells>) {
+                    if (response.isSuccessful){
+                        viewWell = response.body()!!
+                        adapter = ViewWellAdapter(fragmentTransaction , viewWell)
+                        Log.d("SURVEY DATA", viewWell.toString())
+                        binding.viewWellRecyclerView.adapter = adapter
+                        initfilterspinner()
+
+                    }
+                    else {
+                        Toast.makeText(
+                            context,
+                            "NullHELLO",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                }
+
+                override fun onFailure(call: Call<ViewWells>, t: Throwable) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.viewWellProgress.visibility = View.GONE
+
+                }
+
+            })
     }
     private fun getWellstest(){
-        Toast.makeText(context, "waiting for test data", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "TEST DATA", Toast.LENGTH_SHORT).show()
+        binding.viewWellProgress.visibility = View.VISIBLE
+        val fragmentTransaction = fragmentManager?.beginTransaction()
+        RetrofitClient.instance.gettestWells("Bearer ${UserID.userAccessToken}")
+            .enqueue(object : Callback<ViewWells> {
+                override fun onResponse(call: Call<ViewWells>, response: Response<ViewWells>) {
+                    if (response.isSuccessful){
+                        viewWell = response.body()!!
+                        adapter = ViewWellAdapter(fragmentTransaction , viewWell)
+                        Log.d("WELL DATA", viewWell.toString())
+                        binding.viewWellRecyclerView.adapter = adapter
+                        initfilterspinner()
+
+                    }
+                    else {
+                        Toast.makeText(
+                            context,
+                            "NullHELLO",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                }
+
+                override fun onFailure(call: Call<ViewWells>, t: Throwable) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.viewWellProgress.visibility = View.GONE
+
+                }
+
+            })
+
+
     }
     private fun getWellstrouble() {
-        Toast.makeText(context, "waiting for trouble data", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Trouble Data", Toast.LENGTH_SHORT).show()
+        binding.viewWellProgress.visibility = View.VISIBLE
+        val fragmentTransaction = fragmentManager?.beginTransaction()
+        RetrofitClient.instance.gettroubleWells("Bearer ${UserID.userAccessToken}")
+            .enqueue(object : Callback<ViewWells> {
+                override fun onResponse(call: Call<ViewWells>, response: Response<ViewWells>) {
+                    if (response.isSuccessful){
+                        viewWell = response.body()!!
+                        adapter = ViewWellAdapter(fragmentTransaction , viewWell)
+                        Log.d("TROUBLE DATA", viewWell.toString())
+                        binding.viewWellRecyclerView.adapter = adapter
+                        initfilterspinner()
+
+                    }
+                    else {
+                        Toast.makeText(
+                            context,
+                            "NullHELLO",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                }
+
+                override fun onFailure(call: Call<ViewWells>, t: Throwable) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.viewWellProgress.visibility = View.GONE
+
+                }
+
+            })
     }
     fun sort(list:ViewWells,type:String){
         when(type){

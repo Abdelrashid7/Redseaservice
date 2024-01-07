@@ -99,8 +99,8 @@
             android:id="@+id/fromYearSpinner"
             android:layout_width="@dimen/qb_px_80"
             android:layout_height="@dimen/qb_px_40"
-            android:background="@drawable/spinner_drop_down"
             android:elevation="@dimen/qb_px_30"
+            android:background="@drawable/spinner_drop_down"
             app:layout_constraintBottom_toBottomOf="@id/fromMonthSpinner"
             android:layout_marginStart="@dimen/qb_px_2"
             app:layout_constraintStart_toEndOf="@id/fromMonthSpinner"
@@ -255,6 +255,25 @@
                 android:layout_marginBottom="3dp"
                 />
         </androidx.cardview.widget.CardView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/updateWellBtn"
+            android:visibility="gone"
+            android:layout_width="@dimen/qb_px_130"
+            android:layout_height="@dimen/qb_px_80"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:background="@drawable/btn_white"
+            android:drawableTop="@drawable/ic_publish"
+            android:padding="@dimen/qb_px_10"
+            android:shadowRadius="@integer/material_motion_duration_long_1"
+            android:text="UPDATE"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/toYearSpinner"
+            app:layout_constraintTop_toBottomOf="@id/cardView"
+            android:layout_marginBottom="3dp"
+            />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

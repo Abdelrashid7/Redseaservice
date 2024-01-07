@@ -16,11 +16,14 @@ import com.example.redsea.R
 import com.example.redsea.network.PostData.Publish
 import com.example.redsea.network.PostData.Text
 import com.example.redsea.network.PostData.WellData
+import com.example.redsea.network.Response.UserWells.UserWellsItem
 import com.example.redsea.network.Response.WellOptions.StructureDescription
 import org.json.JSONObject
 import java.util.Calendar
 
-class ChildAddWellAdapter(val structureDescription: List<StructureDescription>) :
+class ChildAddWellAdapter(
+    val structureDescription: List<StructureDescription>
+) :
     RecyclerView.Adapter<ChildAddWellAdapter.BaseViewHolder>() {
 
     abstract class BaseViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem)
@@ -100,6 +103,7 @@ class ChildAddWellAdapter(val structureDescription: List<StructureDescription>) 
 
         fun updateInputObject(structureId: Int) {
             val wellData = getMultiTextData(structureId)
+
 
             // Check if the structure_description_id already exists in well_data
             val existingWellData =
@@ -401,31 +405,75 @@ class ChildAddWellAdapter(val structureDescription: List<StructureDescription>) 
                         }
 
                         "String" -> {
+//                            holder.inputText.setText("sam")
                             holder.inputText.inputType = InputType.TYPE_CLASS_TEXT
 
                         }
 
                         "Date" -> {
+                            val currendate = Calendar.getInstance()
+                            val currentday = currendate.get(Calendar.DAY_OF_MONTH)
+                            val currentmonth = currendate.get(Calendar.MONTH)
+                            val currentyear = currendate.get(Calendar.YEAR)
+                            val datePickerDialog = DatePickerDialog(
+                                holder.itemView.context,
+                                { _, selectedYear, selectedMonth, selectedDay ->
+                                    val selectedDate = "$selectedDay / ${selectedMonth +1} / $selectedYear"
+                                    holder.inputText.setText(selectedDate)
+                                    saveDateValue(structureDescription[pos].id,selectedDate)
+                                },
+                                currentyear,
+                                currentmonth,
+                                currentday
+                            )
                             holder.inputText.setOnClickListener {
-
-                                val currendate = Calendar.getInstance()
-                                val currentday = currendate.get(Calendar.DAY_OF_MONTH)
-                                val currentmonth = currendate.get(Calendar.MONTH)
-                                val currentyear = currendate.get(Calendar.YEAR)
-                                val datePickerDialog = DatePickerDialog(
-                                    holder.itemView.context,
-                                    { _, selectedYear, selectedMonth, selectedDay ->
-                                        val selectedDate = "$selectedDay / ${selectedMonth +1} / $selectedYear"
-                                        holder.inputText.setText(selectedDate)
-                                        saveDateValue(structureDescription[pos].id,selectedDate)
-                                    },
-                                    currentyear,
-                                    currentmonth,
-                                    currentday
-                                )
                                 datePickerDialog.show()
 
                             }
+
+                            holder.inputText.addTextChangedListener(object : TextWatcher {
+                                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                                    // Handle as needed
+                                }
+
+                                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                                    // Handle as needed
+                                    Log.d("s","$s")
+                                }
+
+                                override fun afterTextChanged(s: Editable?) {
+                                    try {
+                                        val inputText = s.toString()
+
+                                        val structureId = structureDescription[pos].id
+
+                                        // Check if the structure_description_id already exists in well_data
+                                        val existingWellData =
+                                            input.well_data.find { it.structure_description_id == structureId }
+
+                                        if (existingWellData != null) {
+                                            // If it exists, update the data
+                                            existingWellData.data = inputText
+                                        } else {
+                                            // If it doesn't exist, add a new WellData entry
+                                            input.well_data.add(
+                                                WellData(
+                                                    structure_description_id = structureId,
+                                                    data = inputText
+                                                )
+                                            )
+                                        }
+
+                                        // Log the values for debugging
+                                        Log.d("PRINTINPUT1", input.well_data.toString())
+                                    } catch (e: Exception) {
+                                        Log.d("TEXT HELLO ERROR", e.message.toString())
+                                    }
+                                }
+                            })
+
+
+
 
 
 
@@ -445,12 +493,75 @@ class ChildAddWellAdapter(val structureDescription: List<StructureDescription>) 
                             }
 
                         }
-                        "List" ->{
+
+                        "List" -> {
+
+
+                                holder.inputText.hint = "/ to seperate items"
+                                holder.inputText.addTextChangedListener(object : TextWatcher {
+                                    override fun beforeTextChanged(
+                                        s: CharSequence?,
+                                        start: Int,
+                                        count: Int,
+                                        after: Int
+                                    ) {
+
+                                    }
+
+                                    override fun onTextChanged(
+                                        s: CharSequence?,
+                                        start: Int,
+                                        before: Int,
+                                        count: Int
+                                    ) {
+
+                                    }
+
+                                    override fun afterTextChanged(s: Editable?) {
+                                        try {
+                                            val inputText = s.toString()
+                                            val structureId = structureDescription[pos].id
+
+                                            // Update the input object with the list data
+                                            // Join the items with slashes
+                                            val itemsList= inputText.split("/").filter { it.isNotEmpty() }
+                                            val newData=itemsList.joinToString()
+
+
+
+                                            // Check if the structure_description_id already exists in well_data
+                                            val existingWellData =
+                                                input.well_data.find { it.structure_description_id == structureId }
+
+                                            if (existingWellData != null) {
+                                                // If it exists, update the data
+                                                existingWellData.data = newData
+                                            } else {
+                                                // If it doesn't exist, add a new WellData entry
+                                                input.well_data.add(
+                                                    WellData(
+                                                        structure_description_id = structureId,
+                                                        data = newData
+                                                    )
+                                                )
+                                                Log.d("ITEMS LIST", itemsList.toString())
+                                            }
+
+
+                                            Log.d("PRINTINPUT1", input.well_data.toString())
+
+                                        } catch (e: Exception) {
+                                            Log.d("TEXT HELLO ERROR", e.message.toString())
+
+                                        }
+                                    }
+                                })
+
+                            }
 
 
                         }
 
-                    }
 
                     holder.inputText.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
@@ -552,7 +663,6 @@ class ChildAddWellAdapter(val structureDescription: List<StructureDescription>) 
         return when(structureDescription[position].type){
             "MultiText"-> VIEW_MULTITEXT
             "Boolean"-> VIEW_BOOLEAN
-            "List"-> VIEW_LIST
             else -> { VIEW_NORMAL }
         }
     }

@@ -11,6 +11,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.redsea.R
+import com.example.redsea.network.PostData.Publish
+import com.example.redsea.network.PostData.WellData
+import com.example.redsea.network.Response.WellOptions.StructureDescription
 import com.example.redsea.network.Response.WellOptions.WellOptionsResponse
 import com.example.redsea.service.ui.fragments.optionsFetched
 
@@ -44,12 +47,12 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
             val currentOption = addWellResponse
             Log.d("POSITION", position.toString())
             holder.wellNumberTV.text = currentOption[position].name
-                holder.childStructureNameTV.text =
-                    currentOption[position].structures[holder.pos].name
-                Log.d("HELLOADAPTER3", currentOption[position].structures[holder.pos].name)
+            holder.childStructureNameTV.text =
+                currentOption[position].structures[holder.pos].name
+            Log.d("HELLOADAPTER3", currentOption[position].structures[holder.pos].name)
 
             holder.childRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
-            if(currentOption[position].structures[holder.pos].structure_descriptions != null) {
+            if (currentOption[position].structures[holder.pos].structure_descriptions != null) {
                 adapter =
                     ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions)
                 holder.childRecyclerView.adapter = adapter
@@ -73,16 +76,18 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
                 holder.wellNumberTV.setBackgroundResource(R.drawable.btn_white)
             }
 
+
             holder.nextStructureBtn.setOnClickListener {
                 Log.d("Expanded Next", "TRUE")
                 if (holder.pos < currentOption[position].structures.size - 1) {
                     holder.pos++
-                    holder.childStructureNameTV.text = currentOption[position].structures[holder.pos].name
+                    holder.childStructureNameTV.text =
+                        currentOption[position].structures[holder.pos].name
                     holder.childRecyclerView.adapter =
                         ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions)
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
-                    if (holder.pos==currentOption[position].structures.size-1){
-                        holder.nextStructureBtn.visibility=View.GONE
+                    if (holder.pos == currentOption[position].structures.size - 1) {
+                        holder.nextStructureBtn.visibility = View.GONE
 
                     }
 
@@ -96,7 +101,7 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
                     holder.childStructureNameTV.text = currentOption[position].structures[holder.pos].name
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     holder.childRecyclerView.adapter =
-                        ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions)
+                        ChildAddWellAdapter(currentOption[position].structures[holder.pos].structure_descriptions)
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     holder.nextStructureBtn.visibility=View.VISIBLE
 
@@ -126,3 +131,4 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
     }
 
 }
+

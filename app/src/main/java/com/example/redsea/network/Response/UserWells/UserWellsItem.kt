@@ -1,6 +1,7 @@
 package com.example.redsea.network.Response.UserWells
 
 import android.widget.ImageView
+import java.io.Serializable
 
 data class UserWellsItem(
     val created_at: String,
@@ -14,4 +15,4 @@ data class UserWellsItem(
     val user_id: String,
     val well: Any,
 
-)
+):Serializable

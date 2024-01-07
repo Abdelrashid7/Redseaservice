@@ -51,11 +51,10 @@ class EditRequestFragment: Fragment() {
                 val dattype= mysharedpref(requireContext()).getDataType()
                 when (dattype) {
                     "operations" -> makeRequestoperations(wellItem,requestDescription)
-                    "wellSurveys" -> makeRequestsurvey()
-                    "test" -> makeRequesttest()
-                    "trouble" -> makeRequesttrouble()
+                    "wellSurveys" -> makeRequestsurvey(wellItem,requestDescription)
+                    "test" -> makeRequesttest(wellItem,requestDescription)
+                    "trouble" -> makeRequesttrouble(wellItem,requestDescription)
                 }
-                makeRequestoperations(wellItem, requestDescription)
             }
             else
             {
@@ -78,7 +77,7 @@ class EditRequestFragment: Fragment() {
                         val responseBody = response.body()
                         Log.d("REQUESTBODYRESPONSE", responseBody.toString())
                         requestDone = true
-                        Toast.makeText(context, "Request Posted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Request Posted op", Toast.LENGTH_SHORT).show()
                         val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
                         transaction?.replace(R.id.fragmentContainer, OperationsFragment())
 //                        transaction?.addToBackStack(null)
@@ -108,13 +107,127 @@ class EditRequestFragment: Fragment() {
 
             })
     }
-    fun makeRequestsurvey(){
-        Toast.makeText(context, "make request survey", Toast.LENGTH_SHORT).show()
+    fun makeRequestsurvey(wellItem : ViewWellsItem, requestDescription : String){
+        val updateWellRequest = MakeRequest(wellId = wellItem.id, description = requestDescription)
+        RetrofitClient.instance.makeReqeustsurvey("Bearer ${UserID.userAccessToken}",updateWellRequest)
+            .enqueue(object : Callback<MakeRequestResponse> {
+                override fun onResponse(
+                    call: Call<MakeRequestResponse>,
+                    response: Response<MakeRequestResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        Log.d("REQUESTBODYRESPONSE", responseBody.toString())
+                        requestDone = true
+                        Toast.makeText(context, "Request Posted surv", Toast.LENGTH_SHORT).show()
+                        val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.fragmentContainer, OperationsFragment())
+//                        transaction?.addToBackStack(null)
+                        transaction?.commit()
+
+
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Null",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                }
+
+                override fun onFailure(call: Call<MakeRequestResponse>, t: Throwable) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                }
+
+
+            })
     }
-    fun makeRequesttest(){
-        Toast.makeText(context, "make request survey", Toast.LENGTH_SHORT).show()
+    fun makeRequesttest(wellItem : ViewWellsItem, requestDescription : String){
+        val updateWellRequest = MakeRequest(wellId = wellItem.id, description = requestDescription)
+        RetrofitClient.instance.makeReqeusttest("Bearer ${UserID.userAccessToken}",updateWellRequest)
+            .enqueue(object : Callback<MakeRequestResponse> {
+                override fun onResponse(
+                    call: Call<MakeRequestResponse>,
+                    response: Response<MakeRequestResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        Log.d("REQUESTBODYRESPONSE", responseBody.toString())
+                        requestDone = true
+                        Toast.makeText(context, "Request Posted test", Toast.LENGTH_SHORT).show()
+                        val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.fragmentContainer, OperationsFragment())
+//                        transaction?.addToBackStack(null)
+                        transaction?.commit()
+
+
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Null",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                }
+
+                override fun onFailure(call: Call<MakeRequestResponse>, t: Throwable) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                }
+
+
+            })
+
     }
-    fun makeRequesttrouble(){
-        Toast.makeText(context, "make request survey", Toast.LENGTH_SHORT).show()
+    fun makeRequesttrouble(wellItem : ViewWellsItem, requestDescription : String){
+        val updateWellRequest = MakeRequest(wellId = wellItem.id, description = requestDescription)
+        RetrofitClient.instance.makeReqeusttrouble("Bearer ${UserID.userAccessToken}",updateWellRequest)
+            .enqueue(object : Callback<MakeRequestResponse> {
+                override fun onResponse(
+                    call: Call<MakeRequestResponse>,
+                    response: Response<MakeRequestResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        Log.d("REQUESTBODYRESPONSE", responseBody.toString())
+                        requestDone = true
+                        Toast.makeText(context, "Request Posted trouble", Toast.LENGTH_SHORT).show()
+                        val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.fragmentContainer, OperationsFragment())
+//                        transaction?.addToBackStack(null)
+                        transaction?.commit()
+
+
+                    } else {
+                        Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MakeRequestResponse>, t: Throwable) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                }
+
+
+            })
+
     }
 }

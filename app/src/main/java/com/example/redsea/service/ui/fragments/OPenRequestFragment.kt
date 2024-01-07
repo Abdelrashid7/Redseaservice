@@ -38,8 +38,6 @@ class OPenRequestFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as? TitleInterface)?.onTextChange("Open Request", "Open Request")
         val dattype= mysharedpref(requireContext()).getDataType()
-
-
         when (dattype) {
             "operations" -> getaccrequestoperations()
             "wellSurveys" -> getaccrequestsurvey()
@@ -89,13 +87,85 @@ class OPenRequestFragment : Fragment() {
 
     }
     private fun getaccrequestsurvey(){
-        Toast.makeText(context, "waiting for wellsurvey data", Toast.LENGTH_SHORT).show()
+        val transiaction:FragmentTransaction?=fragmentManager?.beginTransaction()
+        binding.openRequestProgress.visibility=View.VISIBLE
+        RetrofitClient.instance.openRequestsurvey("Bearer ${UserID.userAccessToken}")
+            .enqueue(object :Callback<OPenRequests>{
+                override fun onResponse(
+                    call: Call<OPenRequests>,
+                    response: Response<OPenRequests>
+                ) {
+                    if (response.isSuccessful){
+                        openrequest=response.body()!!
+                        adapter=OPenRequestAdapter(transiaction,openrequest)
+                        binding.opnRequestRecyclerView.adapter=adapter
+                        openrequest.reverse()
+
+                    }
+                    else{
+                        Toast.makeText(context, "response code: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                    binding.openRequestProgress.visibility=View.GONE
+                }
+
+                override fun onFailure(call: Call<OPenRequests>, t: Throwable) {
+                    Toast.makeText(context, "failed to fetch${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
     private fun getaccrequesttest(){
-        Toast.makeText(context, "waiting for test data", Toast.LENGTH_SHORT).show()
+        val transiaction:FragmentTransaction?=fragmentManager?.beginTransaction()
+        binding.openRequestProgress.visibility=View.VISIBLE
+        RetrofitClient.instance.openRequesttest("Bearer ${UserID.userAccessToken}")
+            .enqueue(object :Callback<OPenRequests>{
+                override fun onResponse(
+                    call: Call<OPenRequests>,
+                    response: Response<OPenRequests>
+                ) {
+                    if (response.isSuccessful){
+                        openrequest=response.body()!!
+                        adapter=OPenRequestAdapter(transiaction,openrequest)
+                        binding.opnRequestRecyclerView.adapter=adapter
+                        openrequest.reverse()
+
+                    }
+                    else{
+                        Toast.makeText(context, "response code: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                    binding.openRequestProgress.visibility=View.GONE
+                }
+
+                override fun onFailure(call: Call<OPenRequests>, t: Throwable) {
+                    Toast.makeText(context, "failed to fetch${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
     private fun getaccrequesttrouble(){
-        Toast.makeText(context, "waiting for trouble data", Toast.LENGTH_SHORT).show()
+        val transiaction:FragmentTransaction?=fragmentManager?.beginTransaction()
+        binding.openRequestProgress.visibility=View.VISIBLE
+        RetrofitClient.instance.openRequesttrouble("Bearer ${UserID.userAccessToken}")
+            .enqueue(object :Callback<OPenRequests>{
+                override fun onResponse(
+                    call: Call<OPenRequests>,
+                    response: Response<OPenRequests>
+                ) {
+                    if (response.isSuccessful){
+                        openrequest=response.body()!!
+                        adapter=OPenRequestAdapter(transiaction,openrequest)
+                        binding.opnRequestRecyclerView.adapter=adapter
+                        openrequest.reverse()
+
+                    }
+                    else{
+                        Toast.makeText(context, "response code: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                    binding.openRequestProgress.visibility=View.GONE
+                }
+
+                override fun onFailure(call: Call<OPenRequests>, t: Throwable) {
+                    Toast.makeText(context, "failed to fetch${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
     private fun filteredrequest(query:String){
         if(query!=null){

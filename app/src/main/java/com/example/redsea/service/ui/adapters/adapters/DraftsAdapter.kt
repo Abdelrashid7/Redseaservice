@@ -15,12 +15,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.redsea.R
+import com.example.redsea.network.Response.OpenRequest.OpenRequestItem
 import com.example.redsea.network.Response.UserWells.UserWells
 import com.example.redsea.network.Response.UserWells.UserWellsItem
 import com.example.redsea.service.ui.fragments.AddWellFragment
 import com.example.redsea.ui.fragments.OperationsFragment
 
-class DraftsAdapter(val userWells: MutableList<UserWellsItem>) :
+class DraftsAdapter(private val fragmentTransaction: FragmentTransaction?,val userWells: MutableList<UserWellsItem>) :
     RecyclerView.Adapter<DraftsAdapter.DraftsAdapterViewHolder>() {
 
     class DraftsAdapterViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem) {
@@ -39,34 +40,38 @@ class DraftsAdapter(val userWells: MutableList<UserWellsItem>) :
 
     override fun getItemCount(): Int {
         Log.d("DRAFTSTEST", userWells.size.toString())
-        return minOf(2,userWells.size)
+        return userWells.size
     }
 
     override fun onBindViewHolder(holder: DraftsAdapterViewHolder, position: Int) {
         Log.d("DRAFTSTEST", userWells[position].name)
         holder.setIsRecyclable(false)
         if (userWells[position].published != "published") {
-            holder.name.text = userWells[position].name
-            holder.from.text = userWells[position].from
-            holder.to.text = userWells[position].to
+            val currentdraft:UserWellsItem?=userWells[position]
+            holder.name.text = currentdraft?.name
+            holder.from.text = currentdraft?.from
+            holder.to.text = currentdraft?.to
             holder.edit_icon.setOnClickListener {
-                val addWellFragment = AddWellFragment()
-                val bundle = Bundle()
-                bundle.putString("Wellname", userWells[position].name)
-                bundle.putString("wellFrom", userWells[position].from)
-                bundle.putString("wellTo", userWells[position].to)
-                addWellFragment.arguments = bundle
-                val fragmentManager: FragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
-                val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.fragmentContainer, addWellFragment)
-//                fragmentTransaction.addToBackStack(null)
-                fragmentTransaction.commit()
+                navigateToAddWellFragment(currentdraft!!)
 
             }
 
             }
 
         }
+    private fun navigateToAddWellFragment(editdrafttItem: UserWellsItem) {
+        val viewAddwellFragment = AddWellFragment()
+        val bundle = Bundle()
+        bundle.putBoolean("iseditmode",true)
+        bundle.putString("edittype","editdraft")
+        bundle.putSerializable("draftitem",editdrafttItem)
+        viewAddwellFragment.arguments = bundle
+        fragmentTransaction?.replace(R.id.fragmentContainer, viewAddwellFragment)
+//        fragmentTransaction?.addToBackStack(null)
+        fragmentTransaction?.commit()
+
+
+    }
 
     }
 
