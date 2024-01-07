@@ -16,13 +16,12 @@ import com.example.redsea.R
 import com.example.redsea.network.PostData.Publish
 import com.example.redsea.network.PostData.Text
 import com.example.redsea.network.PostData.WellData
-import com.example.redsea.network.Response.UserWells.UserWellsItem
 import com.example.redsea.network.Response.WellOptions.StructureDescription
 import org.json.JSONObject
 import java.util.Calendar
 
 class ChildAddWellAdapter(
-    val structureDescription: List<StructureDescription>
+    val structureDescription: List<StructureDescription>, val data: Publish?
 ) :
     RecyclerView.Adapter<ChildAddWellAdapter.BaseViewHolder>() {
 
@@ -162,15 +161,31 @@ class ChildAddWellAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        Log.d("Child Text View", structureDescription[position].input)
         var pos = position
         holder.setIsRecyclable(false)
         when (holder) {
             is MultiTextViewHolder -> {
 
                 holder.textViewMultiText.text = structureDescription[position].input
+                if(data != null){
+                    try {
+                        if(position < data.well_data.size) {
+                            val set = data.well_data[position].data.split(",")
+                            val pi = set[0].split(":")
+                            val pd = set[1].split(":")
+                            val ti = set[2].split(":")
+                            val tm = set[3].split(":")
+                            val ct = set[4].split(":")
+                            holder.piMultiInput.setText(pi[1].replace("\"", ""))
+                            holder.pdMultiInput.setText(pd[1].replace("\"", ""))
+                            holder.tiMultiInput.setText(ti[1].replace("\"", ""))
+                            holder.tmMultiInput.setText(tm[1].replace("\"", ""))
+                            holder.ctMultiInput.setText(ct[1].replace("\"", ""))
+                        }
+                    }catch (e:Exception){
 
-
+                    }
+                }
                 try {
                     holder.ctMultiInput.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
@@ -397,6 +412,15 @@ class ChildAddWellAdapter(
                 holder.setIsRecyclable(false)
                 holder.textView.text = structureDescription[position].input
 
+                if(data != null){
+                    if(position < data.well_data.size) {
+                        try {
+                            holder.inputText.setText(data.well_data[position].data)
+                        }catch (e:Exception){
+
+                        }
+                    }
+                }
                 try {
                     when(structureDescription[pos].type) {
                         "Int" -> {

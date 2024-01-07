@@ -1,6 +1,5 @@
 package com.example.redsea.service.ui.adapters.adapters
 
-import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.redsea.R
 import com.example.redsea.network.PostData.Publish
-import com.example.redsea.network.PostData.WellData
-import com.example.redsea.network.Response.WellOptions.StructureDescription
 import com.example.redsea.network.Response.WellOptions.WellOptionsResponse
-import com.example.redsea.service.ui.fragments.optionsFetched
+import com.example.redsea.service.shared.NextBackInteraction
 
 
-class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
+class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val interaction: NextBackInteraction) :
     RecyclerView.Adapter<AddWellAdapter.AddWellViewHolder>() {
     lateinit var adapter : ChildAddWellAdapter
+    private var data:Publish? = null
 
     class AddWellViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem) {
         val wellNumberTV = viewItem.findViewById<TextView>(R.id.addWellNumTV)
@@ -54,7 +52,7 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
             holder.childRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
             if (currentOption[position].structures[holder.pos].structure_descriptions != null) {
                 adapter =
-                    ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions)
+                    ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
                 holder.childRecyclerView.adapter = adapter
             }
             Log.d("POSITIONEXPANDABLE", currentOption[position].name)
@@ -81,10 +79,12 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
                 Log.d("Expanded Next", "TRUE")
                 if (holder.pos < currentOption[position].structures.size - 1) {
                     holder.pos++
+                    interaction.onCLickNext(holder.pos)
                     holder.childStructureNameTV.text =
                         currentOption[position].structures[holder.pos].name
+                    //Log.d("Child", holder.pos.toString())
                     holder.childRecyclerView.adapter =
-                        ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions)
+                        ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     if (holder.pos == currentOption[position].structures.size - 1) {
                         holder.nextStructureBtn.visibility = View.GONE
@@ -98,10 +98,16 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
             holder.backStructureBtn.setOnClickListener {
                 if (holder.pos > 0) {
                     holder.pos--
+                    interaction.onCLickBack(holder.pos)
                     holder.childStructureNameTV.text = currentOption[position].structures[holder.pos].name
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
+                    //Log.d("Child", data.toString())
+                    //Log.d("Child", holder.pos.toString())
+
                     holder.childRecyclerView.adapter =
-                        ChildAddWellAdapter(currentOption[position].structures[holder.pos].structure_descriptions)
+                        ChildAddWellAdapter(currentOption[position].structures[holder.pos].structure_descriptions,
+                            data
+                        )
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     holder.nextStructureBtn.visibility=View.VISIBLE
 
@@ -128,6 +134,10 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse) :
         Log.d("SizeItem", addWellResponse.size.toString())
         Log.d("SizeItem","FIRST")
         return addWellResponse.size
+    }
+
+    fun setData(d: Publish?){
+        data = d
     }
 
 }

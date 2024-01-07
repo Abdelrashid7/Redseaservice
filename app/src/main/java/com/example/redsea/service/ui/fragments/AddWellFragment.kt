@@ -28,6 +28,7 @@ import retrofit2.Response
 import java.util.Calendar
 import com.example.redsea.network.Response.PublishWellResponse.PublishWellResponse
 import com.example.redsea.network.Response.UpdatWellResponse.UpdateWellResponse
+import com.example.redsea.service.shared.NextBackInteraction
 import com.example.redsea.service.ui.activity.mysharedpref
 import com.example.redsea.ui.activity.MainActivity
 
@@ -43,8 +44,9 @@ var toYear: Int = 0
 var fromDay: Int = 0
 var fromMonth: Int = 0
 var fromYear: Int = 0
+val list = arrayListOf<Publish>()
 
-class AddWellFragment : Fragment() {
+class AddWellFragment : Fragment(),NextBackInteraction {
     lateinit var binding: FragmentAddWellBinding
 
     override fun onCreateView(
@@ -440,7 +442,7 @@ class AddWellFragment : Fragment() {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
-                                addWellAdapter = AddWellAdapter(wellOptionsResponse)
+                                addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
                             } else {
 
@@ -490,7 +492,7 @@ class AddWellFragment : Fragment() {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
-                                addWellAdapter = AddWellAdapter(wellOptionsResponse)
+                                addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
                             } else {
                                 Toast.makeText(
@@ -540,7 +542,7 @@ class AddWellFragment : Fragment() {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
-                                addWellAdapter = AddWellAdapter(wellOptionsResponse)
+                                addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
                             } else {
                                 Toast.makeText(
@@ -589,7 +591,7 @@ class AddWellFragment : Fragment() {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
-                                addWellAdapter = AddWellAdapter(wellOptionsResponse)
+                                addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
                             } else {
                                 Toast.makeText(
@@ -1017,6 +1019,18 @@ class AddWellFragment : Fragment() {
                 Toast.LENGTH_SHORT).show()
 
         }
+
+    }
+
+    override fun onCLickNext(position: Int) {
+        list.add(addWellAdapter.adapter.enteredList())
+        //addWellAdapter.setData(addWellAdapter.adapter.enteredList())
+        Log.d("Child", addWellAdapter.adapter.enteredList().well_data.toString())
+    }
+
+    override fun onCLickBack(position: Int) {
+        addWellAdapter.setData(list[0])
+        //Log.d("Child", addWellAdapter.adapter.enteredList().toString())
 
     }
 }
