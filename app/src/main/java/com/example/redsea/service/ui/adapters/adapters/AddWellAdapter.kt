@@ -83,8 +83,14 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
                     holder.childStructureNameTV.text =
                         currentOption[position].structures[holder.pos].name
                     //Log.d("Child", holder.pos.toString())
-                    holder.childRecyclerView.adapter =
+                    adapter = if(data!=null){
+                        ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,data)
+                    } else{
                         ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
+                    }
+                    holder.childRecyclerView.adapter = adapter
+//                    holder.childRecyclerView.adapter =
+//                        ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     if (holder.pos == currentOption[position].structures.size - 1) {
                         holder.nextStructureBtn.visibility = View.GONE
@@ -104,10 +110,16 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
                     //Log.d("Child", data.toString())
                     //Log.d("Child", holder.pos.toString())
 
-                    holder.childRecyclerView.adapter =
-                        ChildAddWellAdapter(currentOption[position].structures[holder.pos].structure_descriptions,
-                            data
-                        )
+                    adapter =if(data!=null){
+                        ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,data)
+                    } else{
+                        ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
+                    }
+                    holder.childRecyclerView.adapter = adapter
+//                    holder.childRecyclerView.adapter =
+//                        ChildAddWellAdapter(currentOption[position].structures[holder.pos].structure_descriptions,
+//                            data
+//                        )
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     holder.nextStructureBtn.visibility=View.VISIBLE
 
@@ -118,7 +130,8 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
             }
             holder.constraintLayout.setOnClickListener {
                 currentOption[position].isExpandable = !currentOption[position].isExpandable
-                Log.d("Expanded", currentOption[position].isExpandable.toString())
+                Log.d("optionChanged", position.toString())
+                interaction.onClickOption(position)
                 notifyItemChanged(position)
             }
         }catch (e : Exception)

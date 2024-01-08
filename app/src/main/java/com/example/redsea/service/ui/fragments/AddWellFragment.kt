@@ -49,6 +49,8 @@ val list = arrayListOf<Publish>()
 class AddWellFragment : Fragment(),NextBackInteraction {
     lateinit var binding: FragmentAddWellBinding
 
+    private var publishData: Publish = Publish("", "", "", mutableListOf())
+
     override fun onCreateView(
 
         inflater: LayoutInflater,
@@ -1023,15 +1025,32 @@ class AddWellFragment : Fragment(),NextBackInteraction {
     }
 
     override fun onCLickNext(position: Int) {
-        list.add(addWellAdapter.adapter.enteredList())
-        //addWellAdapter.setData(addWellAdapter.adapter.enteredList())
-        Log.d("Child", addWellAdapter.adapter.enteredList().well_data.toString())
+        try {
+            addWellAdapter.setData(list[position])
+            list.add(addWellAdapter.adapter.enteredList())
+            publishData.well_data.addAll(addWellAdapter.adapter.enteredList().well_data)
+        }catch (e:Exception){
+            addWellAdapter.setData(null)
+            list.add(addWellAdapter.adapter.enteredList())
+            publishData.well_data.addAll(addWellAdapter.adapter.enteredList().well_data)
+        }
+
     }
 
     override fun onCLickBack(position: Int) {
-        addWellAdapter.setData(list[0])
-        //Log.d("Child", addWellAdapter.adapter.enteredList().toString())
+        try {
+            addWellAdapter.setData(list[position])
+            //Log.d("Child", addWellAdapter.adapter.enteredList().toString())
+        }catch (e:Exception){
 
+        }
+
+    }
+
+    override fun onClickOption(position: Int) {
+        addWellAdapter.setData(null)
+        list.clear()
+        publishData.well_data.clear()
     }
 }
 

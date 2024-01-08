@@ -25,6 +25,9 @@ class ChildAddWellAdapter(
 ) :
     RecyclerView.Adapter<ChildAddWellAdapter.BaseViewHolder>() {
 
+    var input: Publish = Publish("", "", "", mutableListOf())
+    var test = input.well_data
+
     abstract class BaseViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem)
 
     val inputList = Text(
@@ -35,8 +38,7 @@ class ChildAddWellAdapter(
         MutableList(structureDescription.size) { "" },
         MutableList(structureDescription.size) { "" }
     )
-    var input: Publish = Publish("", "", "", mutableListOf())
-    var test = input.well_data
+
 
     companion object {
         const val VIEW_NORMAL = 1
@@ -695,6 +697,7 @@ class ChildAddWellAdapter(
     {
         return input
     }
+
 
 
 }
