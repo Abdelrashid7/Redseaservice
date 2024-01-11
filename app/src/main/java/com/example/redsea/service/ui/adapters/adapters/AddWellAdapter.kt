@@ -1,5 +1,6 @@
 package com.example.redsea.service.ui.adapters.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
         val childStructureNameTV = viewItem.findViewById<TextView>(R.id.structureNameTV)
         val nextStructureBtn = viewItem.findViewById<AppCompatButton>(R.id.nextStructureBtn)
         val backStructureBtn = viewItem.findViewById<AppCompatButton>(R.id.backStructureBtn)
+        val doneStructureBtn = viewItem.findViewById<AppCompatButton>(R.id.doneStructureBtn)
         var pos: Int = 0
 
     }
@@ -37,6 +39,7 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
         return AddWellViewHolder(view)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(
         holder: AddWellViewHolder,
         position: Int
@@ -55,13 +58,22 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
                     ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
                 holder.childRecyclerView.adapter = adapter
             }
+
             Log.d("POSITIONEXPANDABLE", currentOption[position].name)
             val isExpandable = currentOption[position].isExpandable
             Log.d("POSITIONEXPANDABLE", currentOption[position].isExpandable.toString())
             if (isExpandable) {
+                if (holder.pos == currentOption[position].structures.size - 1) {
+                    holder.nextStructureBtn.visibility = View.GONE
+                    holder.doneStructureBtn.visibility = View.VISIBLE
+                }else{
+                    holder.nextStructureBtn.visibility = View.VISIBLE
+                    holder.doneStructureBtn.visibility = View.GONE
+                }
+                holder.nextStructureBtn.visibility = View.VISIBLE
+                holder.doneStructureBtn.visibility = View.GONE
                 holder.childRecyclerView.visibility = View.VISIBLE
                 holder.childStructureNameTV.visibility = View.VISIBLE
-                holder.nextStructureBtn.visibility = View.VISIBLE
                 holder.backStructureBtn.visibility = View.VISIBLE
                 holder.childRecyclerView.visibility = View.VISIBLE
                 holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
@@ -70,6 +82,7 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
                 holder.childStructureNameTV.visibility = View.GONE
                 holder.nextStructureBtn.visibility = View.GONE
                 holder.backStructureBtn.visibility = View.GONE
+                holder.doneStructureBtn.visibility = View.GONE
                 holder.childRecyclerView.visibility = View.GONE
                 holder.wellNumberTV.setBackgroundResource(R.drawable.btn_white)
             }
@@ -94,7 +107,7 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     if (holder.pos == currentOption[position].structures.size - 1) {
                         holder.nextStructureBtn.visibility = View.GONE
-
+                        holder.doneStructureBtn.visibility = View.VISIBLE
                     }
 
                 }
@@ -122,30 +135,45 @@ class AddWellAdapter(val addWellResponse: WellOptionsResponse,private val intera
 //                        )
                     holder.wellNumberTV.setBackgroundResource(android.R.color.transparent)
                     holder.nextStructureBtn.visibility=View.VISIBLE
+                    holder.doneStructureBtn.visibility = View.GONE
 
                 } else {
 
                     Log.d("LASTITEM", "NONE")
                 }
             }
+            holder.doneStructureBtn.setOnClickListener{
+                var p = holder.pos
+                p++
+                interaction.onClickDone(p)
+                holder.childRecyclerView.visibility = View.GONE
+                holder.childStructureNameTV.visibility = View.GONE
+                holder.nextStructureBtn.visibility = View.GONE
+                holder.backStructureBtn.visibility = View.GONE
+                holder.doneStructureBtn.visibility = View.GONE
+                holder.childRecyclerView.visibility = View.GONE
+                holder.wellNumberTV.setBackgroundResource(R.drawable.btn_white)
+            }
             holder.constraintLayout.setOnClickListener {
                 currentOption[position].isExpandable = !currentOption[position].isExpandable
-                Log.d("optionChanged", position.toString())
                 interaction.onClickOption(position)
+                holder.pos = 0
+//                adapter =if(data!=null){
+//                    ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,data)
+//                } else{
+//                    ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
+//                }
+//                holder.childRecyclerView.adapter = adapter
                 notifyItemChanged(position)
+                //notifyDataSetChanged()
             }
         }catch (e : Exception)
         {
-            Log.d("CRASHADAPTER", e.message.toString())
-            Log.d("CRASHADAPTER", position.toString())
         }
     }
 
     override fun getItemCount(): Int {
 
-
-        Log.d("SizeItem", addWellResponse.size.toString())
-        Log.d("SizeItem","FIRST")
         return addWellResponse.size
     }
 

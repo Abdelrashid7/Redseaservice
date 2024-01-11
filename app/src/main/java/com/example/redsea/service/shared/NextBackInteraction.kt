@@ -5,4 +5,5 @@ interface NextBackInteraction {
     fun onCLickBack(position: Int)
 
     fun onClickOption(position: Int)
+    fun onClickDone(position: Int)
 }

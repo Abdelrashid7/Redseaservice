@@ -26,7 +26,11 @@ class ChildAddWellAdapter(
     RecyclerView.Adapter<ChildAddWellAdapter.BaseViewHolder>() {
 
     var input: Publish = Publish("", "", "", mutableListOf())
+    var startData: Publish = Publish("", "", "", mutableListOf())
     var test = input.well_data
+    var type : String? = null
+
+
 
     abstract class BaseViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem)
 
@@ -57,7 +61,6 @@ class ChildAddWellAdapter(
     }
 
     inner class MultiTextViewHolder(viewItem: View) : BaseViewHolder(viewItem) {
-
         val textViewMultiText = viewItem.findViewById<TextView>(R.id.childMultiTextTV)
         val piMultiInput = viewItem.findViewById<EditText>(R.id.piMultiTextInput)
         val pdMultiInput = viewItem.findViewById<EditText>(R.id.pdMultiTextInput)
@@ -126,8 +129,10 @@ class ChildAddWellAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             input.well_data = mutableListOf()
 
+
         when (viewType) {
             VIEW_MULTITEXT -> {
+                type = "multi"
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_child_multitext, parent, false)
                 return MultiTextViewHolder(view)
@@ -170,20 +175,25 @@ class ChildAddWellAdapter(
 
                 holder.textViewMultiText.text = structureDescription[position].input
                 if(data != null){
+                    Log.d("list", data.toString())
                     try {
-                        if(position < data.well_data.size) {
-                            val set = data.well_data[position].data.split(",")
-                            val pi = set[0].split(":")
-                            val pd = set[1].split(":")
-                            val ti = set[2].split(":")
-                            val tm = set[3].split(":")
-                            val ct = set[4].split(":")
-                            holder.piMultiInput.setText(pi[1].replace("\"", ""))
-                            holder.pdMultiInput.setText(pd[1].replace("\"", ""))
-                            holder.tiMultiInput.setText(ti[1].replace("\"", ""))
-                            holder.tmMultiInput.setText(tm[1].replace("\"", ""))
-                            holder.ctMultiInput.setText(ct[1].replace("\"", ""))
+                        for (item in data.well_data){
+                            if(structureDescription[pos].id == item.structure_description_id){
+                                val set = item.data.split(",")
+                                val pi = set[0].split(":")
+                                val pd = set[1].split(":")
+                                val ti = set[2].split(":")
+                                val tm = set[3].split(":")
+                                val ct = set[4].split(":")
+                                holder.piMultiInput.setText(pi[1].replace("\"", ""))
+                                holder.pdMultiInput.setText(pd[1].replace("\"", ""))
+                                holder.tiMultiInput.setText(ti[1].replace("\"", ""))
+                                holder.tmMultiInput.setText(tm[1].replace("\"", ""))
+                                holder.ctMultiInput.setText(ct[1].replace("\"", ""))
+                                startData.well_data.add(item)
+                            }
                         }
+
                     }catch (e:Exception){
 
                     }
@@ -415,12 +425,17 @@ class ChildAddWellAdapter(
                 holder.textView.text = structureDescription[position].input
 
                 if(data != null){
-                    if(position < data.well_data.size) {
-                        try {
-                            holder.inputText.setText(data.well_data[position].data)
-                        }catch (e:Exception){
-
+                    try {
+//                            holder.inputText.setText(data.well_data[position].data)
+//                            startData.well_data.add(data.well_data[position])
+                        for (item in data.well_data){
+                            if(structureDescription[pos].id == item.structure_description_id){
+                                holder.inputText.setText(item.data)
+                                startData.well_data.add(item)
+                            }
                         }
+                    }catch (e:Exception){
+
                     }
                 }
                 try {
@@ -460,6 +475,7 @@ class ChildAddWellAdapter(
                             holder.inputText.addTextChangedListener(object : TextWatcher {
                                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                                     // Handle as needed
+
                                 }
 
                                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -588,6 +604,10 @@ class ChildAddWellAdapter(
 
                         }
 
+                    if(position == structureDescription.size -1 ){
+                        input = startData
+                    }
+
 
                     holder.inputText.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
@@ -597,7 +617,6 @@ class ChildAddWellAdapter(
                             after: Int
                         ) {
                             val structureId = structureDescription[pos].id
-
                             // Check if the structure_description_id already exists in well_data
                             val existingWellData = input.well_data.find { it.structure_description_id == structureId }
 
@@ -623,7 +642,7 @@ class ChildAddWellAdapter(
                                 val structureId = structureDescription[pos].id
                                 val newData = s.toString()
 
-// Check if the structure_description_id already exists in well_data
+                                // Check if the structure_description_id already exists in well_data
                                 val existingWellData = input.well_data.find { it.structure_description_id == structureId }
 
                                 if (existingWellData != null) {
@@ -698,6 +717,9 @@ class ChildAddWellAdapter(
         return input
     }
 
+//    fun setStartData(publish: Publish){
+//        startData = publish
+//    }
 
 
 }

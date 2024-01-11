@@ -44,13 +44,13 @@ var toYear: Int = 0
 var fromDay: Int = 0
 var fromMonth: Int = 0
 var fromYear: Int = 0
-val list = arrayListOf<Publish>()
+
 
 class AddWellFragment : Fragment(),NextBackInteraction {
     lateinit var binding: FragmentAddWellBinding
-
     private var publishData: Publish = Publish("", "", "", mutableListOf())
-
+    private var optionPos = 0
+    private var allList = arrayListOf<ArrayList<Publish>>()
     override fun onCreateView(
 
         inflater: LayoutInflater,
@@ -149,13 +149,13 @@ class AddWellFragment : Fragment(),NextBackInteraction {
             if (edittype == "editdraft") {
                 binding.updateWellBtn.setOnClickListener {
                     val updatewell = addWellAdapter.adapter.enteredList()
-                    updatewell.name = binding.wellNameInputText.text.toString()
-                    updatewell.to = "$toYear-$toMonth-$toDay"
-                    updatewell.from = "$fromYear-$fromMonth-$fromDay"
-                    validateSpinnersDate()
-                    val editdarft = arguments?.getSerializable("editdraftitem") as UserWellsItem?
-                    val id = editdarft?.id
-                    updatewell(id!!, updatewell)
+                        updatewell.name = binding.wellNameInputText.text.toString()
+                        updatewell.to = "$toYear-$toMonth-$toDay"
+                        updatewell.from = "$fromYear-$fromMonth-$fromDay"
+                        validateSpinnersDate()
+                        val editdarft = arguments?.getSerializable("editdraftitem") as UserWellsItem?
+                        val id = editdarft?.id
+                        updatewell(id!!, updatewell)
                 }
             } else if (edittype == "editrequest") {
                 binding.updateWellBtn.setOnClickListener {
@@ -444,6 +444,17 @@ class AddWellFragment : Fragment(),NextBackInteraction {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
+
+                                if(allList.isEmpty()){
+                                    for ((counter, item) in wellOptionsResponse.withIndex()){
+                                        allList.add(arrayListOf())
+                                        for (item2 in item.structures){
+                                            allList[counter].add(publishData)
+                                        }
+                                    }
+                                }
+
+
                                 addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
                             } else {
@@ -494,8 +505,17 @@ class AddWellFragment : Fragment(),NextBackInteraction {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
+                                if(allList.isEmpty()){
+                                    for ((counter, item) in wellOptionsResponse.withIndex()){
+                                        allList.add(arrayListOf())
+                                        for (item2 in item.structures){
+                                            allList[counter].add(publishData)
+                                        }
+                                    }
+                                }
                                 addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
+                                Log.d("ChildData", "start + survey + $optionPos + ${0} +${allList.size} + ${allList[1].size}")
                             } else {
                                 Toast.makeText(
                                     context,
@@ -544,8 +564,18 @@ class AddWellFragment : Fragment(),NextBackInteraction {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
+                                if(allList.isEmpty()){
+                                    for ((counter, item) in wellOptionsResponse.withIndex()){
+                                        allList.add(arrayListOf())
+                                        for (item2 in item.structures){
+                                            allList[counter].add(publishData)
+                                        }
+                                    }
+                                }
                                 addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
+                                Log.d("ChildData", "start + set + $optionPos + ${0} +${allList.size} + ${allList[1].size}")
+
                             } else {
                                 Toast.makeText(
                                     context,
@@ -593,8 +623,18 @@ class AddWellFragment : Fragment(),NextBackInteraction {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
                             if (wellOptionsResponse != null) {
+                                if(allList.isEmpty()){
+                                    for ((counter, item) in wellOptionsResponse.withIndex()){
+                                        allList.add(arrayListOf())
+                                        for (item2 in item.structures){
+                                            allList[counter].add(publishData)
+                                        }
+                                    }
+                                }
                                 addWellAdapter = AddWellAdapter(wellOptionsResponse,this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
+                                Log.d("ChildData", "start + trouble + $optionPos + ${0} +${allList.size} + ${allList[1].size}")
+
                             } else {
                                 Toast.makeText(
                                     context,
@@ -1026,31 +1066,53 @@ class AddWellFragment : Fragment(),NextBackInteraction {
 
     override fun onCLickNext(position: Int) {
         try {
-            addWellAdapter.setData(list[position])
-            list.add(addWellAdapter.adapter.enteredList())
-            publishData.well_data.addAll(addWellAdapter.adapter.enteredList().well_data)
+            val l = allList[optionPos][position]
+            addWellAdapter.setData(l)
+
+
+            if(addWellAdapter.adapter.enteredList().well_data.isNotEmpty()) {
+                allList[optionPos][position - 1] = addWellAdapter.adapter.enteredList()
+            }
+
         }catch (e:Exception){
             addWellAdapter.setData(null)
-            list.add(addWellAdapter.adapter.enteredList())
-            publishData.well_data.addAll(addWellAdapter.adapter.enteredList().well_data)
         }
 
     }
 
     override fun onCLickBack(position: Int) {
         try {
-            addWellAdapter.setData(list[position])
-            //Log.d("Child", addWellAdapter.adapter.enteredList().toString())
-        }catch (e:Exception){
+            val l = allList[optionPos][position]
+            addWellAdapter.setData(l)
+            Log.d("ChildData", "back + $optionPos + ${position} + ${l}")
 
+        }catch (e:Exception){
+            addWellAdapter.setData(null)
         }
 
     }
 
     override fun onClickOption(position: Int) {
-        addWellAdapter.setData(null)
-        list.clear()
-        publishData.well_data.clear()
+        optionPos = position
+
+        try {
+            val l = allList[optionPos][0]
+            addWellAdapter.setData(l)
+
+        }catch (e:Exception){
+            addWellAdapter.setData(null)
+        }
+    }
+
+    override fun onClickDone(position: Int) {
+        try {
+            if(addWellAdapter.adapter.enteredList().well_data.isNotEmpty())
+                allList[optionPos][position-1] = addWellAdapter.adapter.enteredList()
+
+        }catch (e:Exception){
+            addWellAdapter.setData(null)
+
+        }
     }
 }
 
