@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.redsea.redsea.R
 import com.redsea.redsea.databinding.FragmentEditRequestBinding
+import com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse
+import com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem
 import com.redsea.redsea.network.retrofit.RetrofitClient
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.UserID
@@ -61,26 +62,23 @@ class EditRequestFragment: Fragment() {
         }
     }
 
-    fun makeRequestoperations(wellItem : com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem, requestDescription : String) {
-        val updateWellRequest = com.redsea.redsea.network.PostData.MakeRequest(
-            wellId = wellItem.id,
+    fun makeRequestoperations(wellItem : ViewWellsItem, requestDescription : String) {
+        val updateWellRequest = com.redsea.redsea.network.PostData.MakeRequest(wellId = wellItem.id,
             description = requestDescription
         )
         RetrofitClient.instance.makeReqeust("Bearer ${UserID.userAccessToken}",updateWellRequest)
-            .enqueue(object : Callback<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse> {
+            .enqueue(object : Callback<MakeRequestResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>,
-                    response: Response<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>
+                    call: Call<MakeRequestResponse>,
+                    response: Response<MakeRequestResponse>
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         Log.d("REQUESTBODYRESPONSE", responseBody.toString())
                         requestDone = true
                         Toast.makeText(context, "Request Posted op", Toast.LENGTH_SHORT).show()
-                        val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.fragmentContainer, OperationsFragment())
-//                        transaction?.addToBackStack(null)
-                        transaction?.commit()
+
+                        navigateto(OperationsFragment())
 
 
                         } else {
@@ -93,7 +91,7 @@ class EditRequestFragment: Fragment() {
                         }
                     }
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>, t: Throwable) {
+                override fun onFailure(call: Call<MakeRequestResponse>, t: Throwable) {
                     Toast.makeText(
                         context,
                         "Failed to fetch data: ${t.message}",
@@ -106,26 +104,24 @@ class EditRequestFragment: Fragment() {
 
             })
     }
-    fun makeRequestsurvey(wellItem : com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem, requestDescription : String){
+    fun makeRequestsurvey(wellItem : ViewWellsItem, requestDescription : String){
         val updateWellRequest = com.redsea.redsea.network.PostData.MakeRequest(
             wellId = wellItem.id,
             description = requestDescription
         )
         RetrofitClient.instance.makeReqeustsurvey("Bearer ${UserID.userAccessToken}",updateWellRequest)
-            .enqueue(object : Callback<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse> {
+            .enqueue(object : Callback<MakeRequestResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>,
-                    response: Response<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>
+                    call: Call<MakeRequestResponse>,
+                    response: Response<MakeRequestResponse>
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         Log.d("REQUESTBODYRESPONSE", responseBody.toString())
                         requestDone = true
                         Toast.makeText(context, "Request Posted surv", Toast.LENGTH_SHORT).show()
-                        val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.fragmentContainer, OperationsFragment())
-//                        transaction?.addToBackStack(null)
-                        transaction?.commit()
+
+                        navigateto(OperationsFragment())
 
 
                     } else {
@@ -138,7 +134,7 @@ class EditRequestFragment: Fragment() {
                     }
                 }
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>, t: Throwable) {
+                override fun onFailure(call: Call<MakeRequestResponse>, t: Throwable) {
                     Toast.makeText(
                         context,
                         "Failed to fetch data: ${t.message}",
@@ -151,26 +147,24 @@ class EditRequestFragment: Fragment() {
 
             })
     }
-    fun makeRequesttest(wellItem : com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem, requestDescription : String){
+    fun makeRequesttest(wellItem : ViewWellsItem, requestDescription : String){
         val updateWellRequest = com.redsea.redsea.network.PostData.MakeRequest(
             wellId = wellItem.id,
             description = requestDescription
         )
         RetrofitClient.instance.makeReqeusttest("Bearer ${UserID.userAccessToken}",updateWellRequest)
-            .enqueue(object : Callback<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse> {
+            .enqueue(object : Callback<MakeRequestResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>,
-                    response: Response<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>
+                    call: Call<MakeRequestResponse>,
+                    response: Response<MakeRequestResponse>
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         Log.d("REQUESTBODYRESPONSE", responseBody.toString())
                         requestDone = true
                         Toast.makeText(context, "Request Posted test", Toast.LENGTH_SHORT).show()
-                        val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.fragmentContainer, OperationsFragment())
-//                        transaction?.addToBackStack(null)
-                        transaction?.commit()
+
+                        navigateto(OperationsFragment())
 
 
                     } else {
@@ -183,7 +177,7 @@ class EditRequestFragment: Fragment() {
                     }
                 }
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>, t: Throwable) {
+                override fun onFailure(call: Call<MakeRequestResponse>, t: Throwable) {
                     Toast.makeText(
                         context,
                         "Failed to fetch data: ${t.message}",
@@ -197,26 +191,24 @@ class EditRequestFragment: Fragment() {
             })
 
     }
-    fun makeRequesttrouble(wellItem : com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem, requestDescription : String){
+    fun makeRequesttrouble(wellItem : ViewWellsItem, requestDescription : String){
         val updateWellRequest = com.redsea.redsea.network.PostData.MakeRequest(
             wellId = wellItem.id,
             description = requestDescription
         )
         RetrofitClient.instance.makeReqeusttrouble("Bearer ${UserID.userAccessToken}",updateWellRequest)
-            .enqueue(object : Callback<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse> {
+            .enqueue(object : Callback<MakeRequestResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>,
-                    response: Response<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>
+                    call: Call<MakeRequestResponse>,
+                    response: Response<MakeRequestResponse>
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         Log.d("REQUESTBODYRESPONSE", responseBody.toString())
                         requestDone = true
                         Toast.makeText(context, "Request Posted trouble", Toast.LENGTH_SHORT).show()
-                        val transaction : FragmentTransaction? = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.fragmentContainer, OperationsFragment())
-//                        transaction?.addToBackStack(null)
-                        transaction?.commit()
+
+                        navigateto(OperationsFragment())
 
 
                     } else {
@@ -224,7 +216,7 @@ class EditRequestFragment: Fragment() {
                     }
                 }
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse>, t: Throwable) {
+                override fun onFailure(call: Call<MakeRequestResponse>, t: Throwable) {
                     Toast.makeText(
                         context,
                         "Failed to fetch data: ${t.message}",
@@ -236,6 +228,13 @@ class EditRequestFragment: Fragment() {
 
 
             })
+
+    }
+    fun navigateto(fragment: Fragment){
+        val transaction=fragmentManager?.beginTransaction()
+        transaction?.replace(R.id.fragmentContainer,fragment)
+        transaction?.addToBackStack(null)
+        transaction?.commit()
 
     }
 }

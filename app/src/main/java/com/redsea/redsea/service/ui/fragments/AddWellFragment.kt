@@ -16,8 +16,13 @@ import com.redsea.redsea.databinding.FragmentAddWellBinding
 import com.redsea.redsea.network.PostData.Publish
 import com.redsea.redsea.network.Response.OpenRequest.OpenRequestItem
 import com.redsea.redsea.network.Response.PublishWellResponse.PublishWellResponse
+import com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse
+import com.redsea.redsea.network.Response.ShowRequest.ShowRequest
 import com.redsea.redsea.network.Response.UpdatWellResponse.UpdateWellResponse
+import com.redsea.redsea.network.Response.UserWellData.UserWellData
 import com.redsea.redsea.network.Response.UserWells.UserWellsItem
+import com.redsea.redsea.network.Response.WellOptions.StructureDescription
+import com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +30,7 @@ import java.util.Calendar
 import com.redsea.redsea.service.ui.activity.MainActivity
 import com.redsea.redsea.network.retrofit.RetrofitClient
 import com.redsea.redsea.service.shared.NextBackInteraction
+import com.redsea.redsea.service.test.WellData
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.UserID
 import com.redsea.redsea.service.ui.activity.mysharedpref
@@ -33,6 +39,9 @@ import com.redsea.redsea.service.ui.adapters.adapters.AddWellAdapter
 
 lateinit var addWellAdapter: AddWellAdapter
 lateinit var intent: Intent
+var well_id:Int?=null
+lateinit var loaded_well_data:ArrayList<com.redsea.redsea.network.PostData.WellData>
+var request_id:Int?=null
 var optionsFetched = false
 var iseditmode: Boolean = false
 var edittype: String? = null
@@ -56,7 +65,6 @@ class AddWellFragment : Fragment(), NextBackInteraction {
         container: ViewGroup?,
         savedInstanceState: Bundle?
 
-
     ): View? {
         try {
 
@@ -66,6 +74,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
             if (!optionsFetched) {
                 binding.addWellProgressBar.visibility = View.VISIBLE
                 val dattype = mysharedpref(requireContext()).getDataType()
+                Log.d("data tupe","$dattype")
                 when (dattype) {
                     "operations" -> fetchOptionsoperations(requireContext())
                     "wellSurveys" -> fetchOptionssurvey()
@@ -83,16 +92,25 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
     private fun loadWellData(it: OpenRequestItem) {
         binding.wellNameInputText.setText(it.well.name)
-        val from = it.well.from.split("-")
-        val to = it.well.to.split("-")
-
+        val dattype=mysharedpref(requireContext()).getDataType()
+        when (dattype) {
+            "operations" -> fetchopenop(it.id)
+            "wellSurveys" -> fetchopensurv(it.id)
+            "test" -> fetchopentest(it.id)
+            "trouble"-> fetchopentrouble(it.id)
+        }
 
     }
 
     private fun loadWellDraft(it: UserWellsItem) {
         binding.wellNameInputText.setText(it.name)
-        val from = it.from.split("-")
-        val to = it.to.split("-")
+        val dattype=mysharedpref(requireContext()).getDataType()
+        when (dattype) {
+            "operations" -> fetchdraftop(it.id)
+            "wellSurveys" -> fetchdraftsurv(it.id)
+            "test" -> fetchdrafttest(it.id)
+            "trouble"-> fetchdrafttrouble(it.id)
+        }
 
 
     }
@@ -139,58 +157,136 @@ class AddWellFragment : Fragment(), NextBackInteraction {
         }
 
         if (iseditmode) {
-            binding.publishWellBtn.visibility = View.GONE
-            binding.updateWellBtn.visibility = View.VISIBLE
+
             if (edittype == "editdraft") {
-                binding.updateWellBtn.setOnClickListener {
-                    val updatewell = addWellAdapter.adapter.enteredList()
-                    updatewell.name = binding.wellNameInputText.text.toString()
-                    updatewell.to = "$toYear-$toMonth-$toDay"
-                    updatewell.from = "$fromYear-$fromMonth-$fromDay"
-                    validateSpinnersDate()
-                    val editdarft =
-                        arguments?.getSerializable("editdraftitem") as UserWellsItem?
-                    val id = editdarft?.id
-                    updatewell(id!!, updatewell)
-                }
+                val editdarft =
+                    arguments?.getSerializable("draftitem") as UserWellsItem?
+                well_id = editdarft?.id
+                Log.d("id","$id")
+                Log.d("name","${editdarft?.name}")
             } else if (edittype == "editrequest") {
+                binding.saveDraftBtn.visibility=View.GONE
+                binding.publishWellBtn.visibility=View.GONE
+                binding.updateWellBtn.visibility=View.VISIBLE
+                val openrequest =
+                    arguments?.getSerializable("openrequest") as OpenRequestItem?
+                well_id = openrequest?.well?.id
+                request_id=openrequest?.id
+                Log.d("request_id","$request_id")
+
                 binding.updateWellBtn.setOnClickListener {
-                    val updatewell = addWellAdapter.adapter.enteredList()
-                    updatewell.name = binding.wellNameInputText.text.toString()
-                    updatewell.to = "$toYear-$toMonth-$toDay"
-                    updatewell.from = "$fromYear-$fromMonth-$fromDay"
-                    validateSpinnersDate()
-                    val openrequest =
-                        arguments?.getSerializable("openrequest") as OpenRequestItem?
-                    val id = openrequest?.well?.id
-                    updatewell(id!!, updatewell)
+                    when (dattype) {
+                        "operations" -> {
+                            updatewell(well_id!!,"operations")
+                        }
+
+                        "wellSurveys" -> {
+                            updatewell(well_id!!,"wellSurveys")
+
+                        }
+
+                        "test" -> {
+                            updatewell(well_id!!,"test")
+                        }
+
+                        "trouble" -> {
+                            updatewell(well_id!!,"trouble")
+                        }
+                    }
+
                 }
+
+
 
             }
         }
         binding.publishWellBtn.setOnClickListener {
-            when (dattype) {
-                "operations" -> {
-                    publish("operations")
+            if (edittype == "editdraft") {
+                when (dattype) {
+                    "operations" -> {
+                        publishsavedDraft("operations")
+                    }
+
+                    "wellSurveys" -> {
+                        publishsavedDraft("wellSurveys")
+
+                    }
+
+                    "test" -> {
+                        publishsavedDraft("test")
+                    }
+
+                    "trouble" -> {
+                        publishsavedDraft("trouble")
+                    }
                 }
+            }
+            else{
+                when (dattype) {
+                    "operations" -> {
+                        publish("operations")
+                    }
 
-                "wellSurveys" -> {
-                    publish("wellSurveys")
+                    "wellSurveys" -> {
+                        publish("wellSurveys")
 
-                }
+                    }
 
-                "test" -> {
-                    publish("test")
-                }
+                    "test" -> {
+                        publish("test")
+                    }
 
-                "trouble" -> {
-                    publish("trouble")
+                    "trouble" -> {
+                        publish("trouble")
+                    }
                 }
             }
 
         }
 
         binding.saveDraftBtn.setOnClickListener {
+            if (edittype=="editdraft"){
+                when (dattype) {
+                    "operations" -> {
+                        updatesavedDraft("operations")
+                    }
+
+                    "wellSurveys" -> {
+                        updatesavedDraft("wellSurveys")
+
+                    }
+
+                    "test" -> {
+                        updatesavedDraft("test")
+                    }
+
+                    "trouble" -> {
+                        updatesavedDraft("trouble")
+                    }
+                }
+
+            }
+            else{
+                when (dattype) {
+                    "operations" -> {
+                        saveDraft("operations")
+                    }
+
+                    "wellSurveys" -> {
+                        saveDraft("wellSurveys")
+
+                    }
+
+                    "test" -> {
+                        saveDraft("test")
+                    }
+
+                    "trouble" -> {
+                        saveDraft("trouble")
+                    }
+                }
+
+            }
             when (dattype) {
                 "operations" -> {
                     saveDraft("operations")
@@ -422,7 +518,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
                     }
 
                     override fun onFailure(
-                        call: Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>,
+                        call: Call<WellOptionsResponse>,
                         t: Throwable
                     ) {
                         Toast.makeText(
@@ -449,10 +545,10 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
             RetrofitClient.instance.getWellssurvey("Bearer ${UserID.userAccessToken}")
                 .enqueue(object :
-                    Callback<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse> {
+                    Callback<WellOptionsResponse> {
                     override fun onResponse(
-                        call: Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>,
-                        response: Response<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>
+                        call: Call<WellOptionsResponse>,
+                        response: Response<WellOptionsResponse>
                     ) {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
@@ -468,10 +564,10 @@ class AddWellFragment : Fragment(), NextBackInteraction {
                                 addWellAdapter =
                                     AddWellAdapter(wellOptionsResponse, this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
-                                Log.d(
-                                    "ChildData",
-                                    "start + survey + $optionPos + ${0} +${allList.size} + ${allList[1].size}"
-                                )
+//                                Log.d(
+//                                    "ChildData",
+//                                    "start + survey + $optionPos + ${0} +${allList.size} + ${allList[1].size}"
+//                                )
                             } else {
                                 Toast.makeText(
                                     context,
@@ -489,7 +585,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
                     }
 
                     override fun onFailure(
-                        call: Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>,
+                        call: Call<WellOptionsResponse>,
                         t: Throwable
                     ) {
                         Toast.makeText(
@@ -517,10 +613,10 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
             RetrofitClient.instance.getWellstest("Bearer ${UserID.userAccessToken}")
                 .enqueue(object :
-                    Callback<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse> {
+                    Callback<WellOptionsResponse> {
                     override fun onResponse(
-                        call: Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>,
-                        response: Response<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>
+                        call: Call<WellOptionsResponse>,
+                        response: Response<WellOptionsResponse>
                     ) {
                         if (response.isSuccessful) {
                             val wellOptionsResponse = response.body()
@@ -532,21 +628,17 @@ class AddWellFragment : Fragment(), NextBackInteraction {
                                             allList[counter].add(publishData)
                                         }
                                     }
+                                    addWellAdapter =
+                                        AddWellAdapter(wellOptionsResponse, this@AddWellFragment)
+                                    binding.recyclerViewAddItem.adapter = addWellAdapter
+//                                    Log.d(
+//                                        "ChildData",
+//                                        "start + set + $optionPos + ${0} +${allList.size} + ${allList[1].size}"
+//                                    )
                                 }
-                                addWellAdapter =
-                                    AddWellAdapter(wellOptionsResponse, this@AddWellFragment)
-                                binding.recyclerViewAddItem.adapter = addWellAdapter
-                                Log.d(
-                                    "ChildData",
-                                    "start + set + $optionPos + ${0} +${allList.size} + ${allList[1].size}"
-                                )
 
                             } else {
-                                Toast.makeText(
-                                    context,
-                                    "Null",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show()
 
                             }
                         } else {
@@ -604,10 +696,10 @@ class AddWellFragment : Fragment(), NextBackInteraction {
                                 addWellAdapter =
                                     AddWellAdapter(wellOptionsResponse, this@AddWellFragment)
                                 binding.recyclerViewAddItem.adapter = addWellAdapter
-                                Log.d(
-                                    "ChildData",
-                                    "start + trouble + $optionPos + ${0} +${allList.size} + ${allList[1].size}"
-                                )
+//                                Log.d(
+//                                    "ChildData",
+//                                    "start + trouble + $optionPos + ${0} +${allList.size} + ${allList[1].size}"
+//                                )
 
                             } else {
                                 Toast.makeText(
@@ -646,22 +738,25 @@ class AddWellFragment : Fragment(), NextBackInteraction {
         }
     }
 
-    fun saveDraft(publish: Publish) {
+    fun saveDraftopertion(publish: Publish) {
         binding.addWellProgressBar.visibility = View.VISIBLE
-        RetrofitClient.instance.saveDraft("Bearer ${UserID.userAccessToken}", publish)
+        RetrofitClient.instance.saveDraft("Bearer ${UserID.userAccessToken}",publish)
             .enqueue(object :
-                Callback<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse> {
+                Callback<SaveDraftResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>,
-                    response: Response<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
                 ) {
                     if (response.isSuccessful) {
                         val wellOptionsResponse = response.body()
                         Log.d("SAVEDDRAFT", "$wellOptionsResponse")
+
                         Toast.makeText(context, "Draft Saved", Toast.LENGTH_SHORT).show()
 
                     } else {
+
                         Toast.makeText(context, "Empty Field Required", Toast.LENGTH_SHORT).show()
+                        Log.d("response","${response.errorBody()}")
 
                     }
                     binding.addWellProgressBar.visibility = View.GONE
@@ -669,7 +764,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
 
                 override fun onFailure(
-                    call: Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>,
+                    call: Call<SaveDraftResponse>,
                     t: Throwable
                 ) {
                     Toast.makeText(
@@ -689,10 +784,10 @@ class AddWellFragment : Fragment(), NextBackInteraction {
         binding.addWellProgressBar.visibility = View.VISIBLE
         RetrofitClient.instance.saveDraftsurvey("Bearer ${UserID.userAccessToken}", publish)
             .enqueue(object :
-                Callback<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse> {
+                Callback<SaveDraftResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>,
-                    response: Response<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
                 ) {
                     if (response.isSuccessful) {
                         val wellOptionsResponse = response.body()
@@ -712,7 +807,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
 
                 override fun onFailure(
-                    call: Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>,
+                    call: Call<SaveDraftResponse>,
                     t: Throwable
                 ) {
                     Toast.makeText(
@@ -730,12 +825,12 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
     fun saveDrafttest(publish: Publish) {
         binding.addWellProgressBar.visibility = View.VISIBLE
-        RetrofitClient.instance.saveDrafttest("Bearer ${UserID.userAccessToken}", publish)
+        RetrofitClient.instance.saveDrafttest("Bearer ${UserID.userAccessToken}",publish)
             .enqueue(object :
-                Callback<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse> {
+                Callback<SaveDraftResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>,
-                    response: Response<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
                 ) {
                     if (response.isSuccessful) {
                         val wellOptionsResponse = response.body()
@@ -775,10 +870,10 @@ class AddWellFragment : Fragment(), NextBackInteraction {
         binding.addWellProgressBar.visibility = View.VISIBLE
         RetrofitClient.instance.saveDrafttrouble("Bearer ${UserID.userAccessToken}", publish)
             .enqueue(object :
-                Callback<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse> {
+                Callback<SaveDraftResponse> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>,
-                    response: Response<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
                 ) {
                     if (response.isSuccessful) {
                         Log.d("response", "$response.body()")
@@ -799,7 +894,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
 
                 override fun onFailure(
-                    call: Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>,
+                    call: Call<SaveDraftResponse>,
                     t: Throwable
                 ) {
                     Toast.makeText(
@@ -842,11 +937,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                        Toast.makeText(
-                            context,
-                            "Empty Field Required",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context, "empty field required", Toast.LENGTH_SHORT).show()
 
                     }
                     binding.addWellProgressBar.visibility = View.GONE
@@ -966,7 +1057,7 @@ class AddWellFragment : Fragment(), NextBackInteraction {
             })
     }
 
-    fun publishtouble(publish: Publish) {
+    fun publishtrouble(publish: Publish) {
         binding.addWellProgressBar.visibility = View.VISIBLE
         RetrofitClient.instance.publishtrouble("Bearer ${UserID.userAccessToken}", publish)
             .enqueue(object :
@@ -1015,9 +1106,393 @@ class AddWellFragment : Fragment(), NextBackInteraction {
 
             })
     }
+// update saved draft
+    fun updatesaveddraftop(id: Int,publish: Publish){
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.upsavedDraft("Bearer ${UserID.userAccessToken}",id,publish)
+            .enqueue(object :
+                Callback<SaveDraftResponse> {
+                override fun onResponse(
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", "$wellOptionsResponse")
+
+                        Toast.makeText(context, "Draft updated", Toast.LENGTH_SHORT).show()
+
+                    } else {
+
+                        Toast.makeText(context, "Empty Field Required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<SaveDraftResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+
+    }
+    fun updatesaveddraftsurvey(id: Int,publish: Publish){
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.upsavedDraftsurvey("Bearer ${UserID.userAccessToken}",id,publish)
+            .enqueue(object :
+                Callback<SaveDraftResponse> {
+                override fun onResponse(
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", "$wellOptionsResponse")
+
+                        Toast.makeText(context, "Draft updated", Toast.LENGTH_SHORT).show()
+
+                    } else {
+
+                        Toast.makeText(context, "Empty Field Required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<SaveDraftResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+
+    }
+    fun updatesaveddraftest(id: Int,publish: Publish){
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.upsavedDrafttest("Bearer ${UserID.userAccessToken}",id,publish)
+            .enqueue(object :
+                Callback<SaveDraftResponse> {
+                override fun onResponse(
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", "$wellOptionsResponse")
+
+                        Toast.makeText(context, "Draft updated", Toast.LENGTH_SHORT).show()
+
+                    } else {
+
+                        Toast.makeText(context, "Empty Field Required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<SaveDraftResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+
+    }
+    fun updatesaveddraftrouble(id: Int,publish: Publish){
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.upsavedDrafttrouble("Bearer ${UserID.userAccessToken}",id,publish)
+            .enqueue(object :
+                Callback<SaveDraftResponse> {
+                override fun onResponse(
+                    call: Call<SaveDraftResponse>,
+                    response: Response<SaveDraftResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", "$wellOptionsResponse")
+
+                        Toast.makeText(context, "Draft updated", Toast.LENGTH_SHORT).show()
+
+                    } else {
+
+                        Toast.makeText(context, "Empty Field Required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<SaveDraftResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        context,
+                        "Failed to fetch data: ${t.message}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+
+    }
+    //publish saved draft
+    fun publishsavedDraft(id: Int,publish: Publish) {
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.publishsavedWell("Bearer ${UserID.userAccessToken}",id,publish)
+            .enqueue(object :
+                Callback<PublishWellResponse> {
+                override fun onResponse(
+                    call: Call<PublishWellResponse>,
+                    response: Response<PublishWellResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", wellOptionsResponse.toString())
+                        Toast.makeText(context, "Well Published", Toast.LENGTH_SHORT).show()
+
+                        intent = Intent(context, MainActivity::class.java)
+                        intent.putExtra("fragmentToLoad", "MainCategoryFragment")
+                        startActivity(intent)
+                    } else {
+                        try {
+                            // Print the error response body
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("FAILED_RESPONSE", errorBody ?: "Error body is null or empty")
+                            Log.e("FAILED_RESPONSE", response?.code().toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(context, "empty field required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<PublishWellResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+    }
+    fun publishsavedsurvey(id: Int,publish: Publish) {
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.publishsavedsurvey("Bearer ${UserID.userAccessToken}",id, publish)
+            .enqueue(object :
+                Callback<PublishWellResponse> {
+                override fun onResponse(
+                    call: Call<PublishWellResponse>,
+                    response: Response<PublishWellResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", wellOptionsResponse.toString())
+                        Toast.makeText(context, "Well Published", Toast.LENGTH_SHORT).show()
+
+                        intent = Intent(context, MainActivity::class.java)
+                        intent.putExtra("fragmentToLoad", "MainCategoryFragment")
+                        startActivity(intent)
+                    } else {
+                        try {
+                            // Print the error response body
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("FAILED_RESPONSE", errorBody ?: "Error body is null or empty")
+                            Log.e("FAILED_RESPONSE", response?.code().toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(context, "empty field required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<PublishWellResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+    }
+    fun publishsavedtest(id: Int,publish: Publish) {
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.publishsavedtest("Bearer ${UserID.userAccessToken}",id, publish)
+            .enqueue(object :
+                Callback<PublishWellResponse> {
+                override fun onResponse(
+                    call: Call<PublishWellResponse>,
+                    response: Response<PublishWellResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", wellOptionsResponse.toString())
+                        Toast.makeText(context, "Well Published", Toast.LENGTH_SHORT).show()
+
+                        intent = Intent(context, MainActivity::class.java)
+                        intent.putExtra("fragmentToLoad", "MainCategoryFragment")
+                        startActivity(intent)
+                    } else {
+                        try {
+                            // Print the error response body
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("FAILED_RESPONSE", errorBody ?: "Error body is null or empty")
+                            Log.e("FAILED_RESPONSE", response?.code().toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(context, "empty field required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<PublishWellResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+    }
+    fun publishsavedtrouble(id: Int,publish: Publish) {
+        binding.addWellProgressBar.visibility = View.VISIBLE
+        RetrofitClient.instance.publishsavedtrouble("Bearer ${UserID.userAccessToken}",id, publish)
+            .enqueue(object :
+                Callback<PublishWellResponse> {
+                override fun onResponse(
+                    call: Call<PublishWellResponse>,
+                    response: Response<PublishWellResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("SAVEDDRAFT", wellOptionsResponse.toString())
+                        Toast.makeText(context, "Well Published", Toast.LENGTH_SHORT).show()
+
+                        intent = Intent(context, MainActivity::class.java)
+                        intent.putExtra("fragmentToLoad", "MainCategoryFragment")
+                        startActivity(intent)
+                    } else {
+                        try {
+                            // Print the error response body
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("FAILED_RESPONSE", errorBody ?: "Error body is null or empty")
+                            Log.e("FAILED_RESPONSE", response?.code().toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(context, "empty field required", Toast.LENGTH_SHORT).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+
+                override fun onFailure(
+                    call: Call<PublishWellResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+
+            })
+    }
 
     private fun updatewell(id: Int, publish: Publish) {
         RetrofitClient.instance.updatewell("Bearer ${UserID.userAccessToken}", id, publish)
+            .enqueue(object :
+                Callback<UpdateWellResponse> {
+                override fun onResponse(
+                    call: Call<UpdateWellResponse>,
+                    response: Response<UpdateWellResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("UPDATEWELL", wellOptionsResponse.toString())
+                        Toast.makeText(context, "well updated", Toast.LENGTH_SHORT).show()
+                    } else {
+                        try {
+                            // Print the error response body
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("FAILED_RESPONSE", errorBody ?: "Error body is null or empty")
+                            Log.e("FAILED_RESPONSE", response?.code().toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(context, "Empty Field Required", Toast.LENGTH_SHORT).show()
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+
+                }
+
+                override fun onFailure(
+                    call: Call<UpdateWellResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+            })
+
+    }
+    private fun updatewellsurvey(id: Int, publish: Publish) {
+        RetrofitClient.instance.updatewellsurvey("Bearer ${UserID.userAccessToken}", id, publish)
             .enqueue(object :
                 Callback<UpdateWellResponse> {
                 override fun onResponse(
@@ -1062,6 +1537,253 @@ class AddWellFragment : Fragment(), NextBackInteraction {
             })
 
     }
+    private fun updatewelltest(id: Int, publish: Publish) {
+        RetrofitClient.instance.updatewelltest("Bearer ${UserID.userAccessToken}", id, publish)
+            .enqueue(object :
+                Callback<UpdateWellResponse> {
+                override fun onResponse(
+                    call: Call<UpdateWellResponse>,
+                    response: Response<UpdateWellResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("UPDATEWELL", wellOptionsResponse.toString())
+                        Toast.makeText(context, "well updated", Toast.LENGTH_SHORT).show()
+
+
+                    } else {
+                        try {
+                            // Print the error response body
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("FAILED_RESPONSE", errorBody ?: "Error body is null or empty")
+                            Log.e("FAILED_RESPONSE", response?.code().toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(
+                            context,
+                            "Empty Field Required",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+
+                }
+
+                override fun onFailure(
+                    call: Call<UpdateWellResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+            })
+
+    }
+    private fun updatewelltrouble(id: Int, publish: Publish) {
+        RetrofitClient.instance.updatewelltrouble("Bearer ${UserID.userAccessToken}", id, publish)
+            .enqueue(object :
+                Callback<UpdateWellResponse> {
+                override fun onResponse(
+                    call: Call<UpdateWellResponse>,
+                    response: Response<UpdateWellResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val wellOptionsResponse = response.body()
+                        Log.d("UPDATEWELL", wellOptionsResponse.toString())
+                        Toast.makeText(context, "well updated", Toast.LENGTH_SHORT).show()
+
+
+                    } else {
+                        try {
+                            // Print the error response body
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("FAILED_RESPONSE", errorBody ?: "Error body is null or empty")
+                            Log.e("FAILED_RESPONSE", response?.code().toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(
+                            context,
+                            "Empty Field Required",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                    binding.addWellProgressBar.visibility = View.GONE
+
+                }
+
+                override fun onFailure(
+                    call: Call<UpdateWellResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG)
+                        .show()
+                    Log.d("Options Data", t.message.toString())
+                    binding.addWellProgressBar.visibility = View.GONE
+                }
+            })
+
+    }
+    //fetch data for open request
+    private fun fetchopenop(id: Int){
+        RetrofitClient.instance.showrequest("Bearer ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<ShowRequest> {
+                override fun onResponse(call: Call<ShowRequest>, response: Response<ShowRequest>) {
+                    if (response.isSuccessful){
+                        loaded_well_data= response.body()?.well?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<ShowRequest>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.d("request Data", t.message.toString())
+                }
+
+            })
+        Toast.makeText(context, "fetchin open operation", Toast.LENGTH_SHORT).show()
+
+    }
+    private fun fetchopensurv(id: Int){
+        RetrofitClient.instance.showrequestsurvey("Bearer ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<ShowRequest> {
+                override fun onResponse(call: Call<ShowRequest>, response: Response<ShowRequest>) {
+                    if (response.isSuccessful){
+                        loaded_well_data= response.body()?.well?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<ShowRequest>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.d("request Data", t.message.toString())
+                }
+
+            })
+        Toast.makeText(context, "fetchin open survey", Toast.LENGTH_SHORT).show()
+    }
+    private fun fetchopentest(id: Int){
+        RetrofitClient.instance.showrequesttest("Bearer ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<ShowRequest> {
+                override fun onResponse(call: Call<ShowRequest>, response: Response<ShowRequest>) {
+                    if (response.isSuccessful){
+                        loaded_well_data= response.body()?.well?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<ShowRequest>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.d("request Data", t.message.toString())
+                }
+
+            })
+        Toast.makeText(context, "fetchin open test", Toast.LENGTH_SHORT).show()
+    }
+    private fun fetchopentrouble(id: Int){
+        RetrofitClient.instance.showrequestrouble("Bearer ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<ShowRequest> {
+                override fun onResponse(call: Call<ShowRequest>, response: Response<ShowRequest>) {
+                    if (response.isSuccessful){
+                        loaded_well_data= response.body()?.well?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<ShowRequest>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.d("request Data", t.message.toString())
+                }
+
+            })
+    }
+
+    //fetch draft
+    private fun fetchdraftop(id: Int){
+        Toast.makeText(context, "fetching draft opeartion", Toast.LENGTH_SHORT).show()
+        RetrofitClient.instance.showdraftop("Bearer  ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<UserWellData> {
+                override fun onResponse(
+                    call: Call<UserWellData>,
+                    response: Response<UserWellData>
+                ) {
+                    if (response.isSuccessful){
+                        loaded_well_data=response.body()?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<UserWellData>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
+
+    }
+    private fun fetchdraftsurv(id: Int){
+        Toast.makeText(context, "fetching draft survey", Toast.LENGTH_SHORT).show()
+        RetrofitClient.instance.showdraftsurv("Bearer  ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<UserWellData> {
+                override fun onResponse(
+                    call: Call<UserWellData>,
+                    response: Response<UserWellData>
+                ) {
+                    if (response.isSuccessful){
+                        loaded_well_data=response.body()?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<UserWellData>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
+
+    }
+    private fun fetchdrafttest(id:Int){
+        Toast.makeText(context, "fetching draft test", Toast.LENGTH_SHORT).show()
+        RetrofitClient.instance.showdrafttest("Bearer  ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<UserWellData> {
+                override fun onResponse(
+                    call: Call<UserWellData>,
+                    response: Response<UserWellData>
+                ) {
+                    if (response.isSuccessful){
+                        loaded_well_data=response.body()?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<UserWellData>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
+    }
+    private fun fetchdrafttrouble(id: Int){
+        Toast.makeText(context, "fetching draft trouble", Toast.LENGTH_SHORT).show()
+        RetrofitClient.instance.showdrafttrouble("Bearer  ${UserID.userAccessToken}",id)
+            .enqueue(object : Callback<UserWellData> {
+                override fun onResponse(
+                    call: Call<UserWellData>,
+                    response: Response<UserWellData>
+                ) {
+                    if (response.isSuccessful){
+                        loaded_well_data=response.body()?.well_data!!
+                    }
+                }
+
+                override fun onFailure(call: Call<UserWellData>, t: Throwable) {
+                    Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
+    }
+
+
 
     private fun validateSpinnersDate() {
         val todayCalendar = Calendar.getInstance()
@@ -1147,30 +1869,72 @@ class AddWellFragment : Fragment(), NextBackInteraction {
     fun publish(type: String) {
         val publish = getPublishData()
         publish.name = binding.wellNameInputText.text.toString()
-        publish.to = "$toYear-$toDay-$toMonth"
-        publish.from = "$fromYear-$fromDay-$fromMonth"
+        publish.from = "$fromYear-$fromMonth-$fromDay"
+        publish.to = "$toYear-$toMonth-$toDay"
         validateSpinnersDate()
         Log.d("PublishData","PublishData + $publish")
         when(type){
             "operations" -> publishWell(publish)
             "wellSurveys" -> publishsurvey(publish)
             "test" -> publishtset(publish)
-            "trouble" -> publishtouble(publish)
+            "trouble" -> publishtrouble(publish)
         }
     }
 
     fun saveDraft(type: String) {
         val publish = getPublishData()
         publish.name = binding.wellNameInputText.text.toString()
-        publish.to = "$toYear-$toDay-$toMonth"
-        publish.from = "$fromYear-$fromDay-$fromMonth"
+        publish.from = "$fromYear-$fromMonth-$fromDay"
+        publish.to = "$toYear-$toMonth-$toDay"
         validateSpinnersDate()
         Log.d("PublishData","PublishData + $publish")
         when(type){
-            "operations" -> saveDraft(publish)
+            "operations" -> saveDraftopertion(publish)
             "wellSurveys" -> saveDraftsurvey(publish)
             "test" -> saveDrafttest(publish)
             "trouble" -> saveDrafttrouble(publish)
+        }
+    }
+    fun updatesavedDraft(type: String) {
+        val publish = getPublishData()
+        publish.name = binding.wellNameInputText.text.toString()
+        publish.from = "$fromYear-$fromMonth-$fromDay"
+        publish.to = "$toYear-$toMonth-$toDay"
+        validateSpinnersDate()
+        Log.d("PublishData","PublishData + $publish")
+        when(type){
+            "operations" -> updatesaveddraftop(well_id!!,publish)
+            "wellSurveys" -> updatesaveddraftsurvey(well_id!!,publish)
+            "test" -> updatesaveddraftest(well_id!!,publish)
+            "trouble" -> updatesaveddraftrouble(well_id!!,publish)
+        }
+    }
+fun publishsavedDraft(type: String) {
+    val publish = getPublishData()
+    publish.name = binding.wellNameInputText.text.toString()
+    publish.from = "$fromYear-$fromMonth-$fromDay"
+    publish.to = "$toYear-$toMonth-$toDay"
+    validateSpinnersDate()
+    Log.d("PublishData","PublishData + $publish")
+    when(type){
+        "operations" -> publishsavedDraft(well_id!!,publish)
+        "wellSurveys" -> publishsavedsurvey(well_id!!,publish)
+        "test" -> publishsavedtest(well_id!!,publish)
+        "trouble" -> publishsavedtrouble(well_id!!,publish)
+    }
+}
+
+    fun updatewell(id: Int,type: String){
+        val publish = getPublishData()
+        publish.name = binding.wellNameInputText.text.toString()
+        publish.from = "$fromYear-$fromMonth-$fromDay"
+        publish.to = "$toYear-$toMonth-$toDay"
+
+        when(type){
+            "operations" -> updatewell(id,publish)
+            "wellSurveys" -> updatewellsurvey(id,publish)
+            "test" -> updatewelltest(id,publish)
+            "trouble" -> updatewelltrouble(id,publish)
         }
     }
 
@@ -1183,6 +1947,11 @@ class AddWellFragment : Fragment(), NextBackInteraction {
             }
         }
         return publish
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        iseditmode=false
     }
 }
 

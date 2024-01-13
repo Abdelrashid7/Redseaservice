@@ -1,5 +1,6 @@
 package com.redsea.redsea.service.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.redsea.redsea.R
 import com.redsea.redsea.databinding.FragmentViewWellBinding
+import com.redsea.redsea.network.ViewWellsResponse.ViewWells
+import com.redsea.redsea.service.ui.BottomNavigationInterface
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.UserID
 import com.redsea.redsea.service.ui.activity.mysharedpref
@@ -22,7 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.Locale
 
-lateinit var  viewWell : com.redsea.redsea.network.ViewWellsResponse.ViewWells
+lateinit var  viewWell : ViewWells
 lateinit var adapter: ViewWellAdapter
 
 
@@ -33,6 +36,7 @@ class ViewWellFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentViewWellBinding.inflate(layoutInflater)
         binding.viewWellRecyclerView.layoutManager = LinearLayoutManager(context)
         return binding.root
@@ -41,6 +45,7 @@ class ViewWellFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? TitleInterface)?.onTextChange("View", getString(R.string.view_toolbar))
+        (activity as? BottomNavigationInterface)?.onBottomNavigationListener("View")
         val dattype= mysharedpref(requireContext()).getDataType()
         when (dattype) {
             "operations" -> getWellsoperations()
@@ -87,13 +92,13 @@ class ViewWellFragment : Fragment(){
             "sort by recent","sort by name", "sort by id", "sort by from date",
             "sort by to date", "sort by create date", "sort by update date"
         )
-        val filteradapter =
+        val filteradapter= context?.let {
             ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
+                it, android.R.layout.simple_spinner_dropdown_item,
                 filterlist
             )
-        filteradapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        }
+        filteradapter?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         binding.filterSpinner.apply {
             adapter=filteradapter
             onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
@@ -110,7 +115,6 @@ class ViewWellFragment : Fragment(){
                         }
                         1->{
                             sort(viewWell,"name")
-
 
                         }
                         2->{
@@ -149,10 +153,10 @@ class ViewWellFragment : Fragment(){
         val fragmentTransaction = fragmentManager?.beginTransaction()
         binding.viewWellProgress.visibility = View.VISIBLE
         com.redsea.redsea.network.retrofit.RetrofitClient.instance.getViewWells("Bearer ${UserID.userAccessToken}")
-            .enqueue(object : Callback<com.redsea.redsea.network.ViewWellsResponse.ViewWells> {
+            .enqueue(object : Callback<ViewWells> {
                 override fun onResponse(
-                    call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>,
-                    response: Response<com.redsea.redsea.network.ViewWellsResponse.ViewWells>
+                    call: Call<ViewWells>,
+                    response: Response<ViewWells>
                 ) {
                     if (response.isSuccessful) {
                         viewWell = response.body()!!
@@ -173,7 +177,7 @@ class ViewWellFragment : Fragment(){
                     }
 
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>, t: Throwable) {
+                override fun onFailure(call: Call<ViewWells>, t: Throwable) {
                     Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
                     Log.d("Options Data", t.message.toString())
                     binding.viewWellProgress.visibility = View.GONE
@@ -186,8 +190,8 @@ class ViewWellFragment : Fragment(){
         binding.viewWellProgress.visibility = View.VISIBLE
         val fragmentTransaction = fragmentManager?.beginTransaction()
         com.redsea.redsea.network.retrofit.RetrofitClient.instance.getsurveyWells("Bearer ${UserID.userAccessToken}")
-            .enqueue(object : Callback<com.redsea.redsea.network.ViewWellsResponse.ViewWells> {
-                override fun onResponse(call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>, response: Response<com.redsea.redsea.network.ViewWellsResponse.ViewWells>) {
+            .enqueue(object : Callback<ViewWells> {
+                override fun onResponse(call: Call<ViewWells>, response: Response<com.redsea.redsea.network.ViewWellsResponse.ViewWells>) {
                     if (response.isSuccessful){
                         viewWell = response.body()!!
                         adapter = ViewWellAdapter(fragmentTransaction , viewWell)
@@ -206,7 +210,7 @@ class ViewWellFragment : Fragment(){
                     }
                 }
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>, t: Throwable) {
+                override fun onFailure(call: Call<ViewWells>, t: Throwable) {
                     Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
                     Log.d("Options Data", t.message.toString())
                     binding.viewWellProgress.visibility = View.GONE
@@ -220,8 +224,8 @@ class ViewWellFragment : Fragment(){
         binding.viewWellProgress.visibility = View.VISIBLE
         val fragmentTransaction = fragmentManager?.beginTransaction()
         com.redsea.redsea.network.retrofit.RetrofitClient.instance.gettestWells("Bearer ${UserID.userAccessToken}")
-            .enqueue(object : Callback<com.redsea.redsea.network.ViewWellsResponse.ViewWells> {
-                override fun onResponse(call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>, response: Response<com.redsea.redsea.network.ViewWellsResponse.ViewWells>) {
+            .enqueue(object : Callback<ViewWells> {
+                override fun onResponse(call: Call<ViewWells>, response: Response<com.redsea.redsea.network.ViewWellsResponse.ViewWells>) {
                     if (response.isSuccessful){
                         viewWell = response.body()!!
                         adapter = ViewWellAdapter(fragmentTransaction , viewWell)
@@ -240,7 +244,7 @@ class ViewWellFragment : Fragment(){
                     }
                 }
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>, t: Throwable) {
+                override fun onFailure(call: Call<ViewWells>, t: Throwable) {
                     Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
                     Log.d("Options Data", t.message.toString())
                     binding.viewWellProgress.visibility = View.GONE
@@ -256,8 +260,8 @@ class ViewWellFragment : Fragment(){
         binding.viewWellProgress.visibility = View.VISIBLE
         val fragmentTransaction = fragmentManager?.beginTransaction()
         com.redsea.redsea.network.retrofit.RetrofitClient.instance.gettroubleWells("Bearer ${UserID.userAccessToken}")
-            .enqueue(object : Callback<com.redsea.redsea.network.ViewWellsResponse.ViewWells> {
-                override fun onResponse(call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>, response: Response<com.redsea.redsea.network.ViewWellsResponse.ViewWells>) {
+            .enqueue(object : Callback<ViewWells> {
+                override fun onResponse(call: Call<ViewWells>, response: Response<ViewWells>) {
                     if (response.isSuccessful){
                         viewWell = response.body()!!
                         adapter = ViewWellAdapter(fragmentTransaction , viewWell)
@@ -276,7 +280,7 @@ class ViewWellFragment : Fragment(){
                     }
                 }
 
-                override fun onFailure(call: Call<com.redsea.redsea.network.ViewWellsResponse.ViewWells>, t: Throwable) {
+                override fun onFailure(call: Call<ViewWells>, t: Throwable) {
                     Toast.makeText(context, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
                     Log.d("Options Data", t.message.toString())
                     binding.viewWellProgress.visibility = View.GONE
@@ -285,7 +289,7 @@ class ViewWellFragment : Fragment(){
 
             })
     }
-    fun sort(list: com.redsea.redsea.network.ViewWellsResponse.ViewWells, type:String){
+    fun sort(list: ViewWells, type:String){
         when(type){
             "recent"->{
                 binding.viewWellProgress.visibility=View.VISIBLE

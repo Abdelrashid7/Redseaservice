@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.redsea.redsea.R
+import com.redsea.redsea.network.Response.UserWells.UserWellsItem
 import com.redsea.redsea.service.ui.fragments.AddWellFragment
 
 class DraftsAdapter(private val fragmentTransaction: FragmentTransaction?,val userWells: MutableList<com.redsea.redsea.network.Response.UserWells.UserWellsItem>) :
@@ -38,19 +39,19 @@ class DraftsAdapter(private val fragmentTransaction: FragmentTransaction?,val us
         Log.d("DRAFTSTEST", userWells[position].name)
         holder.setIsRecyclable(false)
         if (userWells[position].published != "published") {
-            val currentdraft: com.redsea.redsea.network.Response.UserWells.UserWellsItem?=userWells[position]
-            holder.name.text = currentdraft?.name
-            holder.from.text = currentdraft?.from
-            holder.to.text = currentdraft?.to
+            val currentdraft: UserWellsItem=userWells[position]
+            holder.name.text = currentdraft.name
+            holder.from.text = currentdraft.from
+            holder.to.text = currentdraft.to
             holder.edit_icon.setOnClickListener {
-                navigateToAddWellFragment(currentdraft!!)
+                navigateToAddWellFragment(currentdraft)
 
             }
 
             }
 
         }
-    private fun navigateToAddWellFragment(editdrafttItem: com.redsea.redsea.network.Response.UserWells.UserWellsItem) {
+    private fun navigateToAddWellFragment(editdrafttItem: UserWellsItem) {
         val viewAddwellFragment = AddWellFragment()
         val bundle = Bundle()
         bundle.putBoolean("iseditmode",true)
@@ -58,7 +59,7 @@ class DraftsAdapter(private val fragmentTransaction: FragmentTransaction?,val us
         bundle.putSerializable("draftitem",editdrafttItem)
         viewAddwellFragment.arguments = bundle
         fragmentTransaction?.replace(R.id.fragmentContainer, viewAddwellFragment)
-//        fragmentTransaction?.addToBackStack(null)
+        fragmentTransaction?.addToBackStack(null)
         fragmentTransaction?.commit()
 
 

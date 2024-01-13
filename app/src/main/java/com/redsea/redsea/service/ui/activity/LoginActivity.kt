@@ -11,8 +11,10 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.addCallback
 import com.redsea.redsea.R
 import com.redsea.redsea.databinding.ActivityLoginBinding
+import com.redsea.redsea.network.Response.Login.LoginResponse
 import com.redsea.redsea.service.ui.UserID
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var sharedPreference:SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -56,10 +59,10 @@ class LoginActivity : AppCompatActivity() {
                     binding.logInProgress.visibility = View.VISIBLE
                     com.redsea.redsea.network.retrofit.RetrofitClient.instance.userLogin(email, password)
                         .enqueue(object :
-                            Callback<com.redsea.redsea.network.Response.Login.LoginResponse> {
+                            Callback<LoginResponse> {
                             override fun onResponse(
-                                call: Call<com.redsea.redsea.network.Response.Login.LoginResponse>,
-                                logInResponse: Response<com.redsea.redsea.network.Response.Login.LoginResponse>
+                                call: Call<LoginResponse>,
+                                logInResponse: Response<LoginResponse>
                             ) {
                                 if(logInResponse.isSuccessful) {
                                     val loginResponse = logInResponse.body()
@@ -70,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
                                         Log.d("CHECKUSER", UserID.userId.toString())
                                         Log.d("CHECKUSER", UserID.userAccessToken.toString())
                                         startActivity(intent)
+                                        finish()
 
                                         if (binding.remembermeCheckBox.isChecked){
                                             val shareprefeditor:Editor=sharedPreference.edit()
@@ -103,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
                                 binding.logInProgress.visibility = View.GONE
                             }
 
-                            override fun onFailure(call: Call<com.redsea.redsea.network.Response.Login.LoginResponse>, t: Throwable) {
+                            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                                 Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG)
                                     .show()
                                 Log.d("LoginCrash", t.message.toString())

@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fadeScrollbars="false"
-    android:scrollbarAlwaysDrawVerticalTrack="true"
-    android:scrollbarSize="@dimen/qb_px_6"
-    android:scrollbarStyle="outsideOverlay"
-    android:scrollbarThumbVertical="@drawable/btn_round_red"
-    android:scrollbarTrackVertical="@color/pale_grey"
-    android:scrollbars="vertical"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_marginTop="@dimen/qb_px_100"
-        android:layout_height="wrap_content"
-        tools:ignore="WebViewLayout">
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <ProgressBar
+            android:id="@+id/pdfProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/webView"
+            />
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/wellPdfImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/webView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/qb_px_10"
@@ -62,12 +69,5 @@
             android:drawableStart="@drawable/ic_edit_request"
             android:text="@string/edit_request"
             android:gravity="center"/>
-
-        <!-- Add more views as needed within the ConstraintLayout -->
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
-

@@ -13,18 +13,20 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.redsea.redsea.R
+import com.redsea.redsea.network.PostData.Publish
+import com.redsea.redsea.network.Response.WellOptions.StructureDescription
 import org.json.JSONObject
 import java.util.Calendar
 
 class ChildAddWellAdapter(
-    val structureDescription: List<com.redsea.redsea.network.Response.WellOptions.StructureDescription>, val data: com.redsea.redsea.network.PostData.Publish?
+    val structureDescription: List<StructureDescription>, val data: Publish?
 ) :
     RecyclerView.Adapter<ChildAddWellAdapter.BaseViewHolder>() {
 
-    var input: com.redsea.redsea.network.PostData.Publish =
-        com.redsea.redsea.network.PostData.Publish("", "", "", mutableListOf())
-    var startData: com.redsea.redsea.network.PostData.Publish =
-        com.redsea.redsea.network.PostData.Publish("", "", "", mutableListOf())
+    var input: Publish =
+        Publish("", "", "", mutableListOf())
+    var startData: Publish =
+        Publish("", "", "", mutableListOf())
     var test = input.well_data
     var type : String? = null
 
@@ -45,7 +47,7 @@ class ChildAddWellAdapter(
     companion object {
         const val VIEW_NORMAL = 1
         const val VIEW_MULTITEXT = 2
-        const val VIEW_LIST = 3
+//        const val VIEW_LIST = 3
         const val VIEW_BOOLEAN=4
     }
 
@@ -151,11 +153,11 @@ class ChildAddWellAdapter(
                     .inflate(R.layout.item_child_boolean,parent,false)
                 return ChildViewHolder(view)
             }
-            VIEW_LIST ->{
-                val view=LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_child_list,parent,false)
-                return ChildViewHolder(view)
-            }
+//            VIEW_LIST ->{
+//                val view=LayoutInflater.from(parent.context)
+//                    .inflate(R.layout.item_child_list,parent,false)
+//                return ChildViewHolder(view)
+//            }
         }
 
 
@@ -729,6 +731,7 @@ class ChildAddWellAdapter(
         return when(structureDescription[position].type){
             "MultiText"-> VIEW_MULTITEXT
             "Boolean"-> VIEW_BOOLEAN
+//            "List"-> VIEW_LIST
             else -> { VIEW_NORMAL }
         }
     }

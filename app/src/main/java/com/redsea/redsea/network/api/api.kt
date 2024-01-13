@@ -2,9 +2,16 @@ package com.redsea.redsea.network.api
 
 import com.redsea.redsea.network.PostData.MakeRequest
 import com.redsea.redsea.network.PostData.Publish
+import com.redsea.redsea.network.Response.Login.LoginResponse
 import com.redsea.redsea.network.Response.MakeRequest.MakeRequestResponse
 import com.redsea.redsea.network.Response.OpenRequest.OPenRequests
 import com.redsea.redsea.network.Response.PublishWellResponse.PublishWellResponse
+import com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse
+import com.redsea.redsea.network.Response.ShowRequest.ShowRequest
+import com.redsea.redsea.network.Response.UpdatWellResponse.UpdateWellResponse
+import com.redsea.redsea.network.Response.UserWellData.UserWellData
+import com.redsea.redsea.network.Response.UserWells.UserWells
+import com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse
 import com.redsea.redsea.network.Response.Wellpdf.WellPdfResponse
 import com.redsea.redsea.network.ViewWellsResponse.ViewWells
 import retrofit2.Call
@@ -16,7 +23,9 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface api {
 
@@ -26,7 +35,7 @@ interface api {
     fun userLogin(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<com.redsea.redsea.network.Response.Login.LoginResponse>
+    ): Call<LoginResponse>
 
 
     //----------------option operations--------------
@@ -37,31 +46,31 @@ interface api {
 
         @Header("Authorization") authorization: String
 
-    ): Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>
+    ): Call<WellOptionsResponse>
     //options survey
     @Headers("Accept: application/json ; charset=UTF-8")
-    @GET("api/options")
+    @GET("api/surveys")
     fun getWellssurvey(
 
         @Header("Authorization") authorization: String
 
-    ): Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>
+    ): Call<WellOptionsResponse>
     //otions test
     @Headers("Accept: application/json ; charset=UTF-8")
-    @GET("api/options")
+    @GET("api/tests")
     fun getWellstest(
 
         @Header("Authorization") authorization: String
 
-    ): Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>
+    ): Call<WellOptionsResponse>
     //options trouble
     @Headers("Accept: application/json ; charset=UTF-8")
-    @GET("api/options")
+    @GET("api/troubleshoots")
     fun getWellstrouble(
 
         @Header("Authorization") authorization: String
 
-    ): Call<com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse>
+    ): Call<WellOptionsResponse>
 
 
 
@@ -118,7 +127,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Body publish: Publish
 
-    ): Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+    ): Call<SaveDraftResponse>
 
 
     // trouble save
@@ -128,7 +137,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Body publish: Publish
 
-    ): Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+    ): Call<SaveDraftResponse>
     // survey save
     @Headers("Accept: application/json ; charset=UTF-8")
     @POST("api/survey-welldata/saveDraft")
@@ -136,7 +145,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Body publish: Publish
 
-    ): Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+    ): Call<SaveDraftResponse>
     // test save
     @Headers("Accept: application/json ; charset=UTF-8")
     @POST("api/test-welldata/saveDraft")
@@ -144,7 +153,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Body publish: Publish
 
-    ): Call<com.redsea.redsea.network.Response.SaveDraft.SaveDraftResponse>
+    ): Call<SaveDraftResponse>
 
 //----------publish well----------
     @Headers("Accept: application/json ; charset=UTF-8")
@@ -183,6 +192,88 @@ interface api {
         @Body publish : Publish
 
     ): Call<PublishWellResponse>
+    //------------update saved draft--------
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/wellsData/saveDraft")
+    fun upsavedDraft(
+
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish: Publish
+
+    ): Call<SaveDraftResponse>
+
+
+    // trouble save
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/troubleshoot-welldata/saveDraft")
+    fun upsavedDrafttrouble(
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish: Publish
+
+    ): Call<SaveDraftResponse>
+    // survey save
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/survey-welldata/saveDraft")
+    fun upsavedDraftsurvey(
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish: Publish
+
+    ): Call<SaveDraftResponse>
+    // test save
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/test-welldata/saveDraft")
+    fun upsavedDrafttest(
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish: Publish
+
+    ): Call<SaveDraftResponse>
+
+    //--------publish saved draft--------
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/wellsData")
+    fun publishsavedWell(
+
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish : Publish
+
+    ): Call<PublishWellResponse>
+
+    //publish test
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/test-welldata")
+    fun publishsavedtest(
+
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish : Publish
+
+    ): Call<PublishWellResponse>
+    // publish trouble
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/troubleshoot-welldata")
+    fun publishsavedtrouble(
+
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish : Publish
+
+    ): Call<PublishWellResponse>
+    // publish survey
+    @Headers("Accept: application/json ; charset=UTF-8")
+    @POST("api/survey-welldata")
+    fun publishsavedsurvey(
+
+        @Header("Authorization") authorization: String,
+        @Query("well_id")id: Int,
+        @Body publish : Publish
+
+    ): Call<PublishWellResponse>
+
 
 //------------update well------------------
     @Headers("Accept:application/json ; charset=UTF-8")
@@ -191,7 +282,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Path("id") id:Int,
         @Body publish : Publish
-    ):Call<com.redsea.redsea.network.Response.UpdatWellResponse.UpdateWellResponse>
+    ):Call<UpdateWellResponse>
     // update survey
     @Headers("Accept:application/json ; charset=UTF-8")
     @PATCH("api/survey-welldata/{id}")
@@ -199,7 +290,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Path("id") id:Int,
         @Body publish : Publish
-    ):Call<com.redsea.redsea.network.Response.UpdatWellResponse.UpdateWellResponse>
+    ):Call<UpdateWellResponse>
     //update test
     @Headers("Accept:application/json ; charset=UTF-8")
     @PATCH("api/test-welldata/{id}")
@@ -207,7 +298,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Path("id") id:Int,
         @Body publish : Publish
-    ):Call<com.redsea.redsea.network.Response.UpdatWellResponse.UpdateWellResponse>
+    ):Call<UpdateWellResponse>
     // update trouble
     @Headers("Accept:application/json ; charset=UTF-8")
     @PATCH("api/troubleshoot-welldata/{id}")
@@ -215,7 +306,7 @@ interface api {
         @Header("Authorization") authorization: String,
         @Path("id") id:Int,
         @Body publish : Publish
-    ):Call<com.redsea.redsea.network.Response.UpdatWellResponse.UpdateWellResponse>
+    ):Call<UpdateWellResponse>
 
 //---------userwells------------------
     @Headers("Accept: application/json ; charset=UTF-8")
@@ -224,7 +315,7 @@ interface api {
 
         @Header("Authorization") authorization: String,
 
-    ): Call<com.redsea.redsea.network.Response.UserWells.UserWells>
+    ): Call<UserWells>
     // user wells survey
     @Headers("Accept: application/json ; charset=UTF-8")
     @GET("api/wells/userSurveyWells")
@@ -232,7 +323,7 @@ interface api {
 
         @Header("Authorization") authorization: String,
 
-        ): Call<com.redsea.redsea.network.Response.UserWells.UserWells>
+        ): Call<UserWells>
     //user wells test
     @Headers("Accept: application/json ; charset=UTF-8")
     @GET("api/wells/userTestWells")
@@ -240,7 +331,7 @@ interface api {
 
         @Header("Authorization") authorization: String,
 
-        ): Call<com.redsea.redsea.network.Response.UserWells.UserWells>
+        ): Call<UserWells>
     // user wells trouble
     @Headers("Accept: application/json ; charset=UTF-8")
     @GET("api/wells/userTroubleshootWells")
@@ -248,7 +339,7 @@ interface api {
 
         @Header("Authorization") authorization: String,
 
-        ): Call<com.redsea.redsea.network.Response.UserWells.UserWells>
+        ): Call<UserWells>
 
 
 
@@ -306,6 +397,59 @@ fun openRequesttest(
 fun openRequesttrouble(
     @Header("Authorization") authorization: String
 ):Call<OPenRequests>
+//--------fetch request data------------------------------------
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/requests/{id}")
+    fun showrequest(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<ShowRequest>
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/survey-requests/{id}")
+    fun showrequestsurvey(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<ShowRequest>
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/test-requests/{id}")
+    fun showrequesttest(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<ShowRequest>
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/troubleshoot-requests/{id}")
+    fun showrequestrouble(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<ShowRequest>
+
+    //fetch draft data
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/wellsData/{id}")
+    fun showdraftop(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<UserWellData>
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/surveywells/{id}")
+    fun showdraftsurv(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<UserWellData>
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/testwells/{id}")
+    fun showdrafttest(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<UserWellData>
+    @Headers("Accept:application/json ; charset=UTF-8")
+    @GET("api/troubleshootwells/{id}")
+    fun showdrafttrouble(
+        @Header("Authorization") authorization: String,
+        @Path("id") id:Int
+    ):Call<UserWellData>
+
+
 
 
 
@@ -317,7 +461,7 @@ fun openRequesttrouble(
         @Header("Authorization") authorization: String
 
     ): Call<ViewWells>
-    //test wlls
+    //test wells
     @Headers("Accept: application/json ; charset=UTF-8")
     @GET("api/tests")
     fun gettestWells(

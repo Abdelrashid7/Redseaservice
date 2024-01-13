@@ -11,13 +11,19 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.redsea.redsea.R
+import com.redsea.redsea.network.PostData.Publish
+import com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse
 import com.redsea.redsea.service.shared.NextBackInteraction
+import com.redsea.redsea.service.ui.fragments.edittype
+import com.redsea.redsea.service.ui.fragments.iseditmode
 
 
-class AddWellAdapter(val addWellResponse: com.redsea.redsea.network.Response.WellOptions.WellOptionsResponse, private val interaction: NextBackInteraction) :
+class AddWellAdapter(val addWellResponse: WellOptionsResponse, private val interaction: NextBackInteraction) :
     RecyclerView.Adapter<AddWellAdapter.AddWellViewHolder>() {
     lateinit var adapter : ChildAddWellAdapter
-    private var data: com.redsea.redsea.network.PostData.Publish? = null
+    private var data: Publish? = null
+
+
 
     class AddWellViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem) {
         val wellNumberTV = viewItem.findViewById<TextView>(R.id.addWellNumTV)
@@ -52,10 +58,22 @@ class AddWellAdapter(val addWellResponse: com.redsea.redsea.network.Response.Wel
 
             holder.childRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
             if (currentOption[position].structures[holder.pos].structure_descriptions != null) {
-                adapter =
-                    ChildAddWellAdapter(addWellResponse[position].structures[holder.pos].structure_descriptions,null)
-                holder.childRecyclerView.adapter = adapter
-            }
+                if (iseditmode){
+                    if (edittype=="editrequest"){
+                        adapter =
+                            ChildAddWellAdapter(
+                                addWellResponse[position].structures[holder.pos].structure_descriptions,null,
+                            )
+                        holder.childRecyclerView.adapter = adapter
+
+                    }
+                }
+                    adapter =
+                        ChildAddWellAdapter(
+                            addWellResponse[position].structures[holder.pos].structure_descriptions,null
+                        )
+                    holder.childRecyclerView.adapter = adapter
+                }
 
             Log.d("POSITIONEXPANDABLE", currentOption[position].name)
             val isExpandable = currentOption[position].isExpandable
@@ -175,7 +193,7 @@ class AddWellAdapter(val addWellResponse: com.redsea.redsea.network.Response.Wel
         return addWellResponse.size
     }
 
-    fun setData(d: com.redsea.redsea.network.PostData.Publish?){
+    fun setData(d: Publish?){
         data = d
     }
 

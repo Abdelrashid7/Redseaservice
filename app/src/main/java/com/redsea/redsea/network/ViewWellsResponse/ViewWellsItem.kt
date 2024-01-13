@@ -11,7 +11,7 @@ data class ViewWellsItem(
     val rig: Any,
     val to: String,
     val updated_at: String,
-    val user: com.redsea.redsea.network.ViewWellsResponse.User,
+    val user: User,
     val user_id: String,
     val well: Any
-) : Serializable
+) :Serializable

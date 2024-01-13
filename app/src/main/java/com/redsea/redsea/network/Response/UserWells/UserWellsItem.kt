@@ -1,6 +1,7 @@
 package com.redsea.redsea.network.Response.UserWells
 
 import android.widget.ImageView
+import com.redsea.redsea.network.Response.WellOptions.StructureDescription
 import java.io.Serializable
 
 data class UserWellsItem(

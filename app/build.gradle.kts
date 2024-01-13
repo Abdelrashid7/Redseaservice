@@ -37,6 +37,11 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+
+
+
+
 }
 
 dependencies {
@@ -76,8 +81,7 @@ dependencies {
 
     //Shadow for Button
     implementation ("com.github.devlight.shadowlayout:library:1.0.2")
-
-
+    implementation ("com.itextpdf:itextg:5.5.10")
 
 
 

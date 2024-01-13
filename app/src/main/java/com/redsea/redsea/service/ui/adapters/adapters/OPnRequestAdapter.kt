@@ -1,6 +1,7 @@
 package com.redsea.redsea.service.ui.adapters.adapters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.redsea.redsea.R
+import com.redsea.redsea.network.Response.OpenRequest.OpenRequestItem
 import com.redsea.redsea.service.ui.fragments.AddWellFragment
 
 
@@ -21,7 +23,7 @@ class OPenRequestAdapter(private val fragmentTransaction: FragmentTransaction?, 
 
 
     }
-    fun setfilterrequest(openrequest:ArrayList<com.redsea.redsea.network.Response.OpenRequest.OpenRequestItem>){
+    fun setfilterrequest(openrequest:ArrayList<OpenRequestItem>){
         this.acceptedrequest=openrequest
         notifyDataSetChanged()
 
@@ -37,7 +39,7 @@ class OPenRequestAdapter(private val fragmentTransaction: FragmentTransaction?, 
     }
 
     override fun onBindViewHolder(holder: OpenRequestViewHolder, position: Int) {
-        val currentrequest: com.redsea.redsea.network.Response.OpenRequest.OpenRequestItem?= acceptedrequest[position]
+        val currentrequest: OpenRequestItem?= acceptedrequest[position]
         holder.viewWellName.text=currentrequest?.well?.name
         holder.dateIn.text=currentrequest?.well?.from
         holder.dateOut.text=currentrequest?.well?.to
@@ -46,15 +48,16 @@ class OPenRequestAdapter(private val fragmentTransaction: FragmentTransaction?, 
             navigateToAddWellFragment(currentrequest!!)
         }
     }
-    private fun navigateToAddWellFragment(requestItem: com.redsea.redsea.network.Response.OpenRequest.OpenRequestItem) {
+    private fun navigateToAddWellFragment(requestItem: OpenRequestItem) {
         val viewAddwellFragment = AddWellFragment()
         val bundle = Bundle()
         bundle.putBoolean("iseditmode",true)
         bundle.putString("edittype","editrequest")
         bundle.putSerializable("openrequest",requestItem)
+        Log.d("welldata","$requestItem")
         viewAddwellFragment.arguments = bundle
         fragmentTransaction?.replace(R.id.fragmentContainer, viewAddwellFragment)
-//        fragmentTransaction?.addToBackStack(null)
+        fragmentTransaction?.addToBackStack(null)
         fragmentTransaction?.commit()
 
     }

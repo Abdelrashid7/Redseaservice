@@ -16,26 +16,29 @@ import com.redsea.redsea.service.ui.activity.mysharedpref
 
 class MainCategoryFragment : Fragment(){
     lateinit var binding: FragmentMainCategoryBinding
-    private var bottomNavigationListener : BottomNavigationInterface? = null
     private lateinit var mysharedpref: mysharedpref
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentMainCategoryBinding.inflate(layoutInflater)
         return binding.root
+
 
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         mysharedpref= mysharedpref(requireContext())
-        val mainActivity = MainActivity()
         (activity as? TitleInterface)?.onTextChange("Home", getString(R.string.home_toolbar))
+        (activity as? BottomNavigationInterface)?.onBottomNavigationListener("Home")
+
         binding.operationsBtn.setOnClickListener {
-            bottomNavigationListener?.onBottomNavigationListener("operations")
+
             mysharedpref.saveDataType("operations")
             navigateToOperationsFragment()
         }
@@ -59,6 +62,7 @@ class MainCategoryFragment : Fragment(){
         val transaction: FragmentTransaction? = fragmentManager?.beginTransaction()
         val operationsFragment = OperationsFragment()
         transaction?.replace(R.id.fragmentContainer, operationsFragment)
+        transaction?.addToBackStack(null)
         transaction?.commit()
     }
 

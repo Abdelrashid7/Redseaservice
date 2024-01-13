@@ -19,14 +19,17 @@ class MainActivity : AppCompatActivity() , TitleInterface, BottomNavigationInter
     private var prevText : String = "Home"
     private var middleText: String = ""
     private lateinit var binding: ActivityMainBinding
-    val mainCategoryFragment = MainCategoryFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //handle on back pressed
         onBackPressedDispatcher.addCallback(this){
-            initFragment(mainCategoryFragment)
+            if(supportFragmentManager.backStackEntryCount>1){
+                supportFragmentManager.popBackStack()
+
+            }
         }
+
 
         binding =ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -46,10 +49,9 @@ class MainActivity : AppCompatActivity() , TitleInterface, BottomNavigationInter
                 2-> initFragment(ViewWellFragment())
                 3-> initFragment(ProfileFragment())
             }
+
         }
-
         initFragment(MainCategoryFragment())
-
     }
 
 
@@ -121,7 +123,7 @@ class MainActivity : AppCompatActivity() , TitleInterface, BottomNavigationInter
     private fun initFragment(fragment : Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(binding.fragmentContainer.id,fragment)
-//        transaction.addToBackStack(null)
+        transaction.addToBackStack(null)
         transaction.commit()
 
     }
@@ -129,8 +131,22 @@ class MainActivity : AppCompatActivity() , TitleInterface, BottomNavigationInter
     override fun onBottomNavigationListener(identifier: String) {
         when(identifier)
         {
-            "Operations"->binding.bottomNavigation.show(1)
-            "View"->binding.bottomNavigation.show(2)
+            "Home"->{
+                binding.bottomNavigation.show(0)
+            }
+            "Operations"->{
+                binding.bottomNavigation.show(1)
+
+            }
+            "View"->{
+                binding.bottomNavigation.show(2)
+
+            }
+            "Profile"->{
+                binding.bottomNavigation.show(3)
+
+            }
+
         }
     }
 

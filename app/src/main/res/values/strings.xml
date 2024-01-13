@@ -59,4 +59,6 @@
     <string name="Yes">yes</string>
     <string name="no">No</string>
     <string name="done">Done</string>
+    <string name="equipements">Equipements</string>
+    <string name="equipments">Equipments</string>
 </resources>

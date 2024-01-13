@@ -1,5 +1,7 @@
 package com.redsea.redsea.network.ViewWellsResponse
 
+import java.io.Serializable
+
 data class User(
     val created_at: Any,
     val current_team_id: Any,
@@ -12,4 +14,4 @@ data class User(
     val two_factor_confirmed_at: Any,
     val type: String,
     val updated_at: Any
-)
+):Serializable

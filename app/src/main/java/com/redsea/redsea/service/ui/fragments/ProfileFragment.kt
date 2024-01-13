@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.redsea.redsea.R
 import com.redsea.redsea.databinding.FragmentProfileBinding
+import com.redsea.redsea.service.ui.BottomNavigationInterface
 import com.redsea.redsea.service.ui.activity.LoginActivity
 import com.redsea.redsea.service.ui.TitleInterface
 
@@ -27,6 +28,7 @@ class ProfileFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? TitleInterface)?.onTextChange("Profile", getString(R.string.profile_toolbar))
+        (activity as? BottomNavigationInterface)?.onBottomNavigationListener("Profile")
 
         binding.logOutBtn.setOnClickListener {
             startActivity(Intent(requireContext(), LoginActivity::class.java))

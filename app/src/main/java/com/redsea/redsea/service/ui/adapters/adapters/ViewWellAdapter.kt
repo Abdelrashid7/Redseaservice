@@ -8,8 +8,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
+import com.example.redsea.service.ui.fragments.ViewWellDetailsFragment
 import com.redsea.redsea.R
-import com.redsea.redsea.service.ui.fragments.ViewWellDetailsFragment
+import com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem
 
 
 class ViewWellAdapter(private val fragmentTransaction: FragmentTransaction?, private var viewWells: MutableList<com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem>) :
@@ -27,7 +28,7 @@ class ViewWellAdapter(private val fragmentTransaction: FragmentTransaction?, pri
             LayoutInflater.from(parent.context).inflate(R.layout.item_view_well, parent, false)
         return viewWellViewHolder(view)
     }
-    fun setFilterlist(viewWells: MutableList<com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem>){
+    fun setFilterlist(viewWells: MutableList<ViewWellsItem>){
         this.viewWells=viewWells
         notifyDataSetChanged()
     }
@@ -48,14 +49,14 @@ class ViewWellAdapter(private val fragmentTransaction: FragmentTransaction?, pri
         }
     }
 
-    private fun navigateToViewWellDetailsFragment(well: com.redsea.redsea.network.ViewWellsResponse.ViewWellsItem) {
+    private fun navigateToViewWellDetailsFragment(well: ViewWellsItem) {
         val viewWellDetailsFragment = ViewWellDetailsFragment()
 
         val bundle = Bundle()
         bundle.putSerializable("wellItem", well)
         viewWellDetailsFragment.arguments = bundle
         fragmentTransaction?.replace(R.id.fragmentContainer, viewWellDetailsFragment)
-//        fragmentTransaction?.addToBackStack(null)
+        fragmentTransaction?.addToBackStack(null)
         fragmentTransaction?.commit()
     }
 }
