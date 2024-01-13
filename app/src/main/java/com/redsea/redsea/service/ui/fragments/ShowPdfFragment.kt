@@ -12,7 +12,7 @@ import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.redsea.R
+import com.redsea.redsea.R
 
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.UserID

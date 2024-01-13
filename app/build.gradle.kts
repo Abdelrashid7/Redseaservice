@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.redsea"
+    namespace = "com.redsea.redsea"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.redsea"
+        applicationId = "com.redsea.redsea"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

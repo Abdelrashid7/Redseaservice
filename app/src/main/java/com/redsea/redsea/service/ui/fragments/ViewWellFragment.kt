@@ -11,8 +11,8 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.redsea.R
-import com.example.redsea.databinding.FragmentViewWellBinding
+import com.redsea.redsea.R
+import com.redsea.redsea.databinding.FragmentViewWellBinding
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.UserID
 import com.redsea.redsea.service.ui.activity.mysharedpref

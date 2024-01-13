@@ -12,11 +12,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.redsea.R
-import com.redsea.redsea.network.PostData.Publish
-import com.redsea.redsea.network.PostData.Text
-import com.redsea.redsea.network.PostData.WellData
-import com.redsea.redsea.network.Response.WellOptions.StructureDescription
+import com.redsea.redsea.R
 import org.json.JSONObject
 import java.util.Calendar
 
@@ -742,9 +738,6 @@ class ChildAddWellAdapter(
         return input
     }
 
-//    fun setStartData(publish: Publish){
-//        startData = publish
-//    }
 
 
 }

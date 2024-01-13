@@ -11,8 +11,8 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.redsea.R
-import com.example.redsea.databinding.ActivityLoginBinding
+import com.redsea.redsea.R
+import com.redsea.redsea.databinding.ActivityLoginBinding
 import com.redsea.redsea.service.ui.UserID
 import retrofit2.Call
 import retrofit2.Callback

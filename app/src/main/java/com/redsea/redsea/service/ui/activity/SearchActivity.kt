@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-
-import com.example.redsea.R
-
+import com.redsea.redsea.R
 
 
 class SearchActivity : AppCompatActivity() {

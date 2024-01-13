@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.redsea.R
-import com.example.redsea.databinding.FragmentProfileBinding
+import com.redsea.redsea.R
+import com.redsea.redsea.databinding.FragmentProfileBinding
 import com.redsea.redsea.service.ui.activity.LoginActivity
 import com.redsea.redsea.service.ui.TitleInterface
 

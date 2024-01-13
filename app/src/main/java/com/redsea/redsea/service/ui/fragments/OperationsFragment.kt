@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.redsea.R
-import com.example.redsea.databinding.FragmentOperationsBinding
+import com.redsea.redsea.R
+import com.redsea.redsea.databinding.FragmentOperationsBinding
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.UserID
 import com.redsea.redsea.service.ui.activity.mysharedpref

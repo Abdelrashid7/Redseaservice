@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.redsea.R
-import com.example.redsea.databinding.FragmentEditRequestBinding
+import com.redsea.redsea.R
+import com.redsea.redsea.databinding.FragmentEditRequestBinding
 import com.redsea.redsea.network.retrofit.RetrofitClient
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.UserID

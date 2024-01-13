@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
-import com.example.redsea.R
-import com.example.redsea.databinding.ActivityMainBinding
+import com.redsea.redsea.R
+import com.redsea.redsea.databinding.ActivityMainBinding
 import com.redsea.redsea.service.ui.BottomNavigationInterface
 import com.redsea.redsea.service.ui.TitleInterface
 import com.redsea.redsea.service.ui.fragments.MainCategoryFragment

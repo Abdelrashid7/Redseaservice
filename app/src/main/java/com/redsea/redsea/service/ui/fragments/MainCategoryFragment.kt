@@ -7,8 +7,8 @@ import android.view.ViewGroup
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.redsea.R
-import com.example.redsea.databinding.FragmentMainCategoryBinding
+import com.redsea.redsea.R
+import com.redsea.redsea.databinding.FragmentMainCategoryBinding
 import com.redsea.redsea.service.ui.activity.MainActivity
 import com.redsea.redsea.service.ui.BottomNavigationInterface
 import com.redsea.redsea.service.ui.TitleInterface

@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
-import com.example.redsea.R
+import com.redsea.redsea.R
 import com.redsea.redsea.service.ui.fragments.AddWellFragment
 
 class DraftsAdapter(private val fragmentTransaction: FragmentTransaction?,val userWells: MutableList<com.redsea.redsea.network.Response.UserWells.UserWellsItem>) :

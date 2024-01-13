@@ -10,7 +10,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.redsea.R
+import com.redsea.redsea.R
 import com.redsea.redsea.service.shared.NextBackInteraction
 
 

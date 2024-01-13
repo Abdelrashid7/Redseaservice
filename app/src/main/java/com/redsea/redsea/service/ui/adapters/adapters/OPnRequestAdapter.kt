@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
-import com.example.redsea.R
+import com.redsea.redsea.R
 import com.redsea.redsea.service.ui.fragments.AddWellFragment
 
 
